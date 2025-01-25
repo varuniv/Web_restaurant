@@ -17,13 +17,13 @@
     ?>
 </head>
 <body style="margin: 0;height:100%">
-    <header>
-        <nav class = "navbar border d-flex justify-content-between " style= "background-color:#AF8669">
+    <header style="position: sticky;top: 0;">
+        <nav class = "navbar d-flex justify-content-between " style= "background-color:#065b16">
             <div class="mx-3">
-                <a href="accueil.php"><img src="/img/loginTitle.png" alt="Accueil" style="max-height:50px"></a>
+                <a href="accueil.php"><img src="../img/logo_site.png" alt="Accueil" style="max-height:50px"></a>
             </div>
             <div class="mx-3">
-                <a class = "btn rounded-3 border-1 border-dark " style= "background-color:#F5DF4D" href="login.php">Déconnexion</a>
+                <a class ="btn"style="background-color:#EFEFE1" href="login.php">Déconnexion</a>
             </div>
         </nav>
     </header>

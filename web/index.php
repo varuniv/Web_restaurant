@@ -1,12 +1,12 @@
 <?php
-$cssFile = "styles/login.css";
+$cssFile = "../styles/login.css";
 include 'header.php';
 ?>
 
     <div class="login_div">
-        <img src="img/image_accueil.png" alt="Image de la page de connexion">
+        <img src="../img/image_accueil.png" alt="Image de la page de connexion">
         <div class="aside">
-            <img src="img/logo_site.png" alt="IUT">
+            <img src="../img/logo_site.png" alt="IUT">
             <form action="login.php" method="POST">
                 <label class="loginLab">Email</label>
                 <input class="loginInputs" type="text" name="email" required>
