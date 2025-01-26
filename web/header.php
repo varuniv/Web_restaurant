@@ -16,7 +16,7 @@
     }
     ?>
 </head>
-<body style="margin: 0;height:100%">
+<body style="margin: 0;height:100%;background-color: #EFEFE1;">
     <header style="position: sticky;top: 0;">
         <nav class = "navbar d-flex justify-content-between " style= "background-color:#065b16">
             <div class="mx-3">
