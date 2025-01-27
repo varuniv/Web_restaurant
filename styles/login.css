@@ -38,8 +38,24 @@ form{
     border-radius: 5px;
 }
 
-#connect{
+.sinscrire_div{
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.btn_login{
     background-color: #065b16;
     border-color: black;
     color: white;
+}
+
+.btn_sinscrire{
+    padding: 7px 50px;
+    background-color: #828454;
+    color: black;
+    border: 2px solid;
+    border-color: black;
+    border-radius: 5px;
+    text-decoration: none;
 }

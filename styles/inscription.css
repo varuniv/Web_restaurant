@@ -24,3 +24,13 @@ form{
 input{
     margin-bottom: 3rem;
 }
+
+.btn_inscription{
+    padding: 7px 50px;
+    background-color: #828454;
+    color: black;
+    border: 2px solid;
+    border-color: black;
+    border-radius: 5px;
+    text-decoration: none;
+}

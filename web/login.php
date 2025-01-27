@@ -13,9 +13,12 @@ include 'header.php';
                 <label class="loginLab">Mot de passe</label>
                 <input class="loginInputs" type="password" name="password" required>
                 <div class="submit-btn">
-                    <input id="connect" name="connect" type="submit" value="Se connecter">
+                    <input id="connect" class="btn_login" name="connect" type="submit" value="Se connecter">
                 </div>
             </form>
+            <div class="sinscrire_div">
+                <a href="inscription.php" class="btn_sinscrire">S'inscrire</a>
+            </div>
         </div>
     </div>
 <?php
