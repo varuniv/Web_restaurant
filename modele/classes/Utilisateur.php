@@ -1,6 +1,6 @@
 <?php
 
-namespace bd\classes;
+namespace modele\classes;
 class Utilisateur{
     private int $idUtilisateur;
     private String $pseudo;

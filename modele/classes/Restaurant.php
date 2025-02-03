@@ -1,9 +1,9 @@
 <?php
 
-namespace bd\classes;
-use bd\classes\TypeRestaurant;
-use bd\classes\Cuisine;
-use bd\classes\Emplacement;
+namespace modele\classes;
+use modele\classes\TypeRestaurant;
+use modele\classes\Cuisine;
+use modele\classes\Emplacement;
 class Restaurant{
     private int $idRestaurant;
     private String $nomRestaurant;
