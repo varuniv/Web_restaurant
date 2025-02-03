@@ -5,11 +5,13 @@ class Utilisateur{
     private int $idUtilisateur;
     private String $pseudo;
     private String $password;
+    private array $favoris;
 
     public function __construct(int $idUtilisateur, String $pseudo, String $password){
         $this->idUtilisateur=$idUtilisateur;
         $this->pseudo=$pseudo;
         $this->password=$password;
+        $this->favoris=[];
     }
 
     public function getId():int{
@@ -30,6 +32,10 @@ class Utilisateur{
 
     public function setPassword($password):void{
         $this->password=$password;
+    }
+
+    public function addFavoris(Restaurant $restaurant):void{
+        array_push($this->favoris, $restaurant);
     }
 
     public function __toString():String{
