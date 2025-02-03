@@ -22,16 +22,13 @@ class Restaurant{
     private Cuisine $cuisine;
     private Emplacement $emplacement;
 
-    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, String $departement, String $commune, int $numDepartement, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
+    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
         $this->idRestaurant=$idRestaurant;
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
         $this->siret=$siret;
         $this->numTel=$numTel;
         $this->urlWeb=$urlWeb;
-        $this->departement=$departement;
-        $this->commune=$commune;
-        $this->numDepartement=$numDepartement;
         $this->vegetarien=$vegetarien;
         $this->vegan=$vegan;
         $this->entreeFauteuilRoulant=$entreeFauteuilRoulant;
