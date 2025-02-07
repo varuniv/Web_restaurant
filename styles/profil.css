@@ -1,0 +1,17 @@
+h1{
+    margin: 3rem;
+    font: italic 3rem "Fira Sans", serif;
+    text-align: center;
+}
+
+.note_utilisateur{
+    display: flex;
+    align-items: center;
+    margin-left: 4rem;
+}
+
+.avis_utilisateur{
+    text-align: justify;
+    padding: 1rem;
+    border: solid black;
+}
