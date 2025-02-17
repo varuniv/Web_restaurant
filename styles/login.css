@@ -1,0 +1,62 @@
+.main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.login_div{
+    display: flex;
+    background-color: #EFEFE1; 
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.aside{
+    padding: 2rem;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.loginLab{
+    color:#065b16;
+    margin:1em;
+}
+
+.submit-btn{
+    display: flex;
+    flex-direction: column;
+}
+.submit-btn input{
+    margin:1em;
+}
+
+.loginInputs{
+    border-radius: 5px;
+}
+
+.sinscrire_div{
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.btn_login{
+    background-color: #065b16;
+    border-color: black;
+    color: white;
+}
+
+.btn_sinscrire{
+    padding: 7px 50px;
+    background-color: #828454;
+    color: black;
+    border: 2px solid;
+    border-color: black;
+    border-radius: 5px;
+    text-decoration: none;
+}

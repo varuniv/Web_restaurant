@@ -1,0 +1,98 @@
+.container{
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+h2{
+    font: italic 3rem "Fira Sans", serif;
+    text-align: center;
+}
+
+.container_background{
+    background-color: #828454;
+    padding: 2rem;
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    margin-bottom: 2rem
+}
+
+.description_div{
+    padding: 2rem;
+    background-color: white;
+    width: 100%;
+    text-align: left;
+}
+
+.notes_div{
+    display: flex;
+}
+
+.icon_notes{
+    max-height: 40px;
+    border-radius: 20px;
+    margin-right: 5px;
+}
+
+.adresse_p{
+    font-size: 15px;
+    margin-bottom: 0px !important;
+    font-weight: 1000;
+}
+
+.categorie_div{
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    color: #828454;
+    font-weight: bold;
+}
+
+.point_dore{
+    max-height: 10px;
+    margin-bottom: 13px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.histoire_div{
+    text-align: justify;
+}
+
+h3{
+    text-align: left;
+    margin-left: 4rem;
+    color: #065b16;
+    font: italic small-caps bold 18px cursive;
+    font-size: 4rem;
+    padding-bottom: 2rem;
+}
+
+ul{
+    list-style-type:none;
+}
+
+.profil_utilisateur{
+    display: flex;
+    align-items: center;
+}
+
+.profil_utilisateur img{
+    max-height: 4rem;
+    border: #065b16;
+    border-radius: 2rem;
+    border: solid;
+    margin-right: 1rem;
+}
+
+.note_utilisateur{
+    display: flex;
+    align-items: center;
+    margin-left: 4rem;
+}
+
+.avis_utilisateur{
+    text-align: justify;
+    padding: 1rem;
+    border: solid black;
+}
