@@ -1,6 +1,56 @@
 <?php
 $cssFile = "../styles/accueil.css";
 include 'header.php';
+
+function connexionBd() {
+    try {
+      $connexion = new PDO('sqlite:C:\Users\delah\Desktop\BUT-Info\SAE\Web_restaurant\Web_restaurant\data\db.sqlite');
+      $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      return $connexion;
+    } catch (PDOException $e) {
+      echo "Erreur de connexion : " . $e->getMessage();
+      exit();
+    }
+}
+
+
+function getRestaurants($connexion) {
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM Restaurant R";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+
+function getRestaurantsByName($connexion) {
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM Restaurant R ORDER BY nomResto ASC";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+function getRestaurantsByNote($connexion) {
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM Restaurant R ORDER BY nbEtoiles DESC";
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+$connexion= connexionBd();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST['order'] == 'nom'){
+        $lesRestaurants = getRestaurantsByName($connexion);
+    }
+    if ( $_POST['order'] == 'note') {
+        $lesRestaurants = getRestaurantsByNote($connexion);
+    }
+    if ( $_POST['order'] == 'default') {
+        $lesRestaurants = getRestaurants($connexion);
+    }
+} else {
+    $lesRestaurants = getRestaurants($connexion);
+}
 ?>
         <div class="container">
             <h1>Le Restaurant de la semaine</h1>
@@ -20,23 +70,33 @@ include 'header.php';
             <h1>Nos restaurants</h1>
             <div class="recherche_div">
                 <input type="text" class="recherche_nom" placeholder="Rechercher un restaurant...">
-                <select class="tri_select">
-                    <option value="nom">Trier par nom</option>
-                    <option value="note">Trier par note</option>
-                </select>
+                <div>
+                    <form method="POST" action="">
+                        <select class="tri_select" name="order">
+                            <option value="default">Trier par défaut</option>
+                            <option value="nom">Trier par nom</option>
+                            <option value="note">Trier par note</option>
+                        </select>
+                        <button type="submit">Trier</button>
+                    </form>
+                </div>
             </div>
         <div>
-        <div class="container">
+        <div class="container liste_restaurant">
+
+        <?php foreach ($lesRestaurants as $leRestaurant) : ?>
             <div class="restaurant_div">
                 <div class="img_restaurant_div">
                     <img src="../img/exemple_restaurant.jpg" class="img_card" alt="Image du Restaurant">
-                    <h3>Nom du Restaurant</h3>
-                    <p>Adresse</p>
+                    <h3><?php echo htmlspecialchars($leRestaurant['nomResto']); ?></h3>
+                    <p><?php echo htmlspecialchars($leRestaurant['dep']). " ". htmlspecialchars($leRestaurant['ville']); ?></p>
                 </div>
                 <div>
                     <a href="detail.php">Voir les informations</a>
                 </div>
             </div>
+        <?php endforeach; ?>
+
         </div>
         </div>
     </div>

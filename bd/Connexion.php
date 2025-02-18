@@ -7,7 +7,7 @@ class Connexion{
 
     public static function connect(){
         try {
-            $connexion = new PDO("pgsql:host=db.bhgnkwowmmjrtnpwmeyn.supabase.co;port=5432;dbname=postgres;user=postgres;password=Alex7896?");
+            $connexion = new PDO("sqlite:data/db.sqlite");
             echo "Connection successed".PHP_EOL;
             return $connexion;
           } catch(PDOException $e) {
