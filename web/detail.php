@@ -1,6 +1,45 @@
 <?php
 $cssFile = "../styles/detail.css";
 include 'header.php';
+
+if (isset($_GET['idResto'])) {
+    $idResto = $_GET['idResto'];
+} else {
+    echo "Erreur : aucun restaurant sélectionné.";
+    exit();
+}
+
+function connexionBd() {
+    try {
+      $connexion = new PDO('sqlite:C:\Users\delah\Desktop\BUT-Info\SAE\Web_restaurant\Web_restaurant\data\bdd.sqlite');
+      $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      return $connexion;
+    } catch (PDOException $e) {
+      echo "Erreur de connexion : " . $e->getMessage();
+      exit();
+    }
+}
+
+function getRestaurant($connexion, $id) {
+    $sql = "SELECT * FROM Restaurant WHERE idRestaurant = :idR ";
+    $stmt = $connexion->prepare($sql);
+    $stmt->bindParam(':idR', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function getNomCuisine($connexion, $idC) {
+    $sql = "SELECT typeCuisine FROM Cuisine WHERE idCuisine = :idC ";
+    $stmt = $connexion->prepare($sql);
+    $stmt->bindParam(':idC', $idC, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch();
+}
+
+
+$connexion= connexionBd();
+$leRestaurant = getRestaurant($connexion, $idResto);
+$typeCuisine = getNomCuisine($connexion, $leRestaurant['idCuisine']);
 ?>
     <div class="container container_background">
         <div class="description_div">
@@ -10,18 +49,67 @@ include 'header.php';
                 <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
                 <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
             </div>
-            <h2>Au bon chico</h2>
-            <p class="adresse_p">12 rue de Disney, 93000 Disneyland</p>
+            <h2><?php echo htmlspecialchars($leRestaurant['nomRestaurant']); ?></h2>
+            <p class="adresse_p"><?php echo htmlspecialchars($leRestaurant['numDepartement']) . " ". htmlspecialchars($leRestaurant['departement']) . ", ". htmlspecialchars($leRestaurant['commune']); ?></p>
             <div class="categorie_div">
-                <p>Fast Food</p>
-                <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
-                <p>Salade</p>
-                <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
-                <p>Viandard</p>
+                <?php if (!empty($leRestaurant['typeRestaurant'])) : ?>
+                    <p><?php echo htmlspecialchars($leRestaurant['typeRestaurant']); ?></p>
+                    <?php if (!empty($typeCuisine['typeCuisine'])) : ?>
+                        <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                        <p><?php echo htmlspecialchars($typeCuisine['typeCuisine']); ?></p>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <?php if (!empty($typeCuisine['typeCuisine'])) : ?>
+                        <p><?php echo htmlspecialchars($typeCuisine['typeCuisine']); ?></p>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($leRestaurant['vegetarien']) : ?>
+                    <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                    <p>Végétarien</p>
+                <?php endif; ?>
+                <?php if ($leRestaurant['vegan']) : ?>
+                    <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                    <p>Végan</p>
+                <?php endif; ?>
+                <?php if ($leRestaurant['entreeFauteuilRoulant']) : ?>
+                    <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                    <p>Access Handicapé</p>
+                <?php endif; ?>
             </div>
-            <div class="histoire_div">
-                <p>Au fil du temps, de la ferme familiale, des hommes et des femmes ont senti le vent du changement, et se sont adaptés aux nouveaux modes de vie. Les murs des "Etxe" ont vu la création de commerces et d’auberges aux prémices du tourisme.
-                Les générations suivantes ont pris le relais, en faisant évoluer les établissements vers d’autres horizons. Des tables authentiques aux étoilées, des familles se sont impliquées dans la transmission de leur patrimoine, leur culture et leur passion.</p>
+            <div class="flex_row_div">
+                <div class="moitie_div">
+                    <?php if (!empty($leRestaurant['horaires'])) : ?>
+                        <div class="flex_row_div">
+                            <p class="description_p">Horaires :</p>
+                            <p><?php echo htmlspecialchars($leRestaurant['horaires']); ?></p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($leRestaurant['numTel'])) : ?>
+                        <div class="flex_row_div">
+                            <p class="description_p">Téléphone :</p>
+                            <p><?php echo htmlspecialchars($leRestaurant['numTel']); ?></p>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($leRestaurant['urlWeb'])) : ?>
+                        <div class="flex_row_div">
+                            <p class="description_p">Site :</p>
+                            <a href="<?php echo htmlspecialchars($leRestaurant['urlWeb']); ?>"><?php echo htmlspecialchars($leRestaurant['urlWeb']); ?></a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($leRestaurant['urlFacebook'])) : ?>
+                        <div class="flex_row_div">
+                            <p class="description_p">Facebook :</p>
+                            <a href="<?php echo htmlspecialchars($leRestaurant['urlFacebook']); ?>"><?php echo htmlspecialchars($leRestaurant['urlFacebook']); ?></a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="moitie_div">
+                    <?php if (!empty($leRestaurant['marqueRestaurant'])) : ?>
+                        <div class="marque_div">
+                            <p><?php echo htmlspecialchars($leRestaurant['marqueRestaurant']); ?></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -51,3 +139,4 @@ include 'header.php';
 <?php
 include 'footer.php';
 ?>
+

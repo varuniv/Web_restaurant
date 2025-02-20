@@ -4,7 +4,7 @@ include 'header.php';
 
 function connexionBd() {
     try {
-      $connexion = new PDO('sqlite:C:\Users\delah\Desktop\BUT-Info\SAE\Web_restaurant\Web_restaurant\data\db.sqlite');
+      $connexion = new PDO('sqlite:C:\Users\delah\Desktop\BUT-Info\SAE\Web_restaurant\Web_restaurant\data\bdd.sqlite');
       $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $connexion;
     } catch (PDOException $e) {
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p><?php echo htmlspecialchars($leRestaurant['dep']). " ". htmlspecialchars($leRestaurant['ville']); ?></p>
                 </div>
                 <div>
-                    <a href="detail.php">Voir les informations</a>
+                <a href="detail.php?idResto=<?php echo urlencode($leRestaurant['idResto']); ?>">Voir les informations</a>
                 </div>
             </div>
         <?php endforeach; ?>

@@ -25,7 +25,7 @@ CREATE TABLE Restaurant (
 );
 
 CREATE TABLE Cuisine (
-    idCuisine INTEGER ,
+    idCuisine INTEGER PRIMARY KEY AUTOINCREMENT,
     typeCuisine VARCHAR(100)
 );
 
@@ -41,9 +41,3 @@ INSERT INTO Restaurant (typeRestaurant, nomRestaurant, horaires, numSiret, numTe
 ('Gastronomique', 'Chez Pierre', '12:00-23:00', '34567890123456', '0678901234', 'http://chezpierre.com', 'Bordeaux', 'Bordeaux', '33', FALSE, FALSE, FALSE, 1, TRUE, 'Indépendant', 5, 'http://facebook.com/chezpierre'),
 ('Fast Food', 'Burger Town', '10:00-00:00', '45678901234567', '0555123456', 'http://burgertown.com', 'Marseille', 'Marseille', '13', FALSE, FALSE, TRUE, NULL, TRUE, 'Franchise', 3, 'http://facebook.com/burgertown'),
 ('Végétarien', 'Green Eat', '09:00-21:00', '56789012345678', '0444123456', 'http://greeneat.com', 'Toulouse', 'Toulouse', '31', TRUE, TRUE, TRUE, NULL, TRUE, 'Indépendant', 4, 'http://facebook.com/greeneat');
-
-
-SELECT R.* 
-FROM Restaurant R
-JOIN Cuisine C ON R.idCuisine = C.idCuisine
-WHERE C.typeCuisine = 'Italienne';

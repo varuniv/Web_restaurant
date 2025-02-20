@@ -55,8 +55,21 @@ h2{
     margin-left: 5px;
 }
 
-.histoire_div{
-    text-align: justify;
+.flex_row_div{
+    display: flex;
+}
+
+.description_p{
+    margin-right: 5px;
+}
+
+.moitie_div{
+    width: 50%;
+}
+
+.marque_div{
+    text-align: end;
+    font-style: italic;
 }
 
 h3{
