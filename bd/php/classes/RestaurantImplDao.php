@@ -12,7 +12,8 @@ use bd\php\Connexion;
 class RestaurantImplDao
 {
     // Getters
-    public function getRestaurant(int $idRestaurant){
+    public function getRestaurant(int $idRestaurant): Restaurant
+    {
         $db = Connexion::connect();
         $selectRestaurant = $db->prepare('SELECT * FROM RESTAURANT 
                                 natural join TYPERESTAURANT 
@@ -71,10 +72,10 @@ class RestaurantImplDao
             $cuisine,
             $emplacement);
     }
-    public function getRestaurants(){
+    public function getRestaurants(): array
+    {
         $db = Connexion::connect();
         $selectRestaurants = $db->prepare('SELECT * FROM RESTAURANT 
-                                natural join CUISINE 
                                 natural join TYPERESTAURANT 
                                 natural join EMPLACEMENT');
         $selectCuisines = $db->prepare('SELECT idType, typeCuisine 
@@ -134,10 +135,10 @@ class RestaurantImplDao
         }
         return $restaurants;
     }
-    public function getRestaurantsByType(String $typeRestaurant){
+    public function getRestaurantsByType(String $typeRestaurant): array
+    {
         $db = Connexion::connect();
         $selectRestaurants = $db->prepare('SELECT * FROM RESTAURANT 
-                                natural join CUISINE 
                                 natural join TYPERESTAURANT 
                                 natural join EMPLACEMENT
                                 where typeRestaurant = ?');
@@ -198,16 +199,70 @@ class RestaurantImplDao
         }
         return $restaurants;
     }
-    public function getRestaurantByNom($nomRestaurant){
+    public function getRestaurantsByNom($nomRestaurant): array
+    {
         $db = Connexion::connect();
-        $select = $db->prepare('SELECT * FROM RESTAURANT 
-                                natural join CUISINE 
+        $selectRestaurants = $db->prepare('SELECT * FROM RESTAURANT 
                                 natural join TYPERESTAURANT 
-                                natural join EMPLACEMENT 
-                                where nomRestaurant = ?');
-        $select->execute(array($nomRestaurant));
-        $answer = $select->fetchAll();
-        print_r($answer);
+                                natural join EMPLACEMENT
+                                where nomRestaurant LIKE ?');
+        $selectCuisines = $db->prepare('SELECT idType, typeCuisine 
+                                FROM CUISINE NATURAL JOIN RESTAURANT 
+                                where idRestaurant = ?');
+        // J'ajoute % pour que l'on puisse avoir tous les restaurants qui commencent par tel nom
+        $selectRestaurants->execute(array($nomRestaurant.'%'));
+
+        $restaurants = array();
+
+        foreach($selectRestaurants->fetchAll() as $restaurant){
+            $idRestaurant = $restaurant["idRestaurant"];
+            $selectCuisines->execute(array($idRestaurant));
+
+            $cuisine = new Cuisine(0);
+            foreach ($selectCuisines->fetchAll() as $c){
+                $cuisine->addType($c["typeCuisine"]);
+            }
+
+            $idTypeRestaurant = $restaurant["idType"];
+            $typeRestaurant = $restaurant["typeRestaurant"];
+
+            $departement = $restaurant["departement"];
+            $commune = $restaurant["commune"];
+            $numDepartement = $restaurant["numDepartement"];
+
+            $nomRestaurant = $restaurant['nomRestaurant'];
+            $horaires = $restaurant['horaires'];
+            $siret = $restaurant['siret'];
+            $numTel = $restaurant['numTel'];
+            $urlWeb = $restaurant['urlWeb'];
+            $vegetarien = $restaurant['vegetarien'];
+            $vegan = $restaurant['vegan'];
+            $entreeFauteuilRoulant = $restaurant['entreeFauteuilRoulant'];
+            $accesInternet = $restaurant['accesInternet'];
+            $marqueRestaurant = $restaurant['marqueRestaurant'];
+            $nbEtoiles = $restaurant['nbEtoiles'];
+            $urlFacebook = $restaurant['urlFacebook'];
+            $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
+            $emplacement = new Emplacement($departement, $commune, $numDepartement);
+
+            $restaurants[] = new Restaurant($idRestaurant,
+                $nomRestaurant,
+                $horaires,
+                $siret,
+                $numTel,
+                $urlWeb,
+                $vegetarien,
+                $vegan,
+                $entreeFauteuilRoulant,
+                $accesInternet,
+                $marqueRestaurant,
+                $nbEtoiles,
+                $urlFacebook,
+                $typeRestaurant,
+                $cuisine,
+                $emplacement);
+        }
+        return $restaurants;
     }
     public function getRestaurantByTypeCuisine($typeCuisine){
         $db = Connexion::connect();
@@ -238,5 +293,5 @@ class RestaurantImplDao
 }
 
 $dao = new RestaurantImplDao();
-$restaurants = $dao->getRestaurantsByType("Bistrot");
+$restaurants = $dao->getRestaurantsByNom("Le Petit");
 print_r($restaurants);
