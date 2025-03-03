@@ -9,16 +9,20 @@ create table TYPERESTAURANT(
     typeRestaurant varchar(42)
 );
 
+create table EMPLACEMENT(
+    numDepartement int primary key,
+    departement varchar(42),
+    commune varchar(42)
+);
+
 create table RESTAURANT(
     idRestaurant int primary key auto_increment,
     idType int,
     nomRestaurant varchar(42),
     horaires varchar(42),
     siret varchar(25) unique,
-    numTel int,
+    numTel varchar(10) unique,
     urlWeb varchar(100),
-    departement varchar(42),
-    commune varchar(42),
     numDepartement int,
     vegetarien boolean,
     vegan boolean,
@@ -57,12 +61,16 @@ create or replace table UTILISATEUR (
 create table DONNER(
     idUtilisateur int,
     idDate int,
+    idRestaurant int,
     avis varchar(100),
-    primary key(idUtilisateur, idDate)
+    note int,
+    primary key(idUtilisateur, idDate, idRestaurant)
 );
 
 alter table RESTAURANT add foreign key (idType) references TYPERESTAURANT (idType);
+alter table RESTAURANT add foreign key (numDepartement) references EMPLACEMENT (numDepartement);
 alter table APPARTENIR add foreign key (idRestaurant) references RESTAURANT (idRestaurant);
 alter table APPARTENIR add foreign key (idCuisine) references CUISINE (idCuisine);
 alter table DONNER add foreign key (idUtilisateur) references UTILISATEUR (idUtilisateur);
 alter table DONNER add foreign key (idDate) references DATEAVIS (idDate);
+alter table DONNER add foreign key (idRestaurant) references RESTAURANT (idRestaurant);

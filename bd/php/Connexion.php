@@ -21,6 +21,4 @@ class Connexion{
       }
   }
 }
-
-$connexion=Connexion::connect();
 ?>

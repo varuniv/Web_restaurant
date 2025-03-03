@@ -8,8 +8,8 @@ class Restaurant{
     private int $idRestaurant;
     private String $nomRestaurant;
     private String $horaires;
-    private int $siret;
-    private int $numTel;
+    private String $siret;
+    private String $numTel;
     private String $urlWeb;
     private bool $vegetarien;
     private bool $vegan;
@@ -162,6 +162,10 @@ class Restaurant{
 
     public function setEmplacement(Emplacement $emplacement):void{
         $this->emplacement=$emplacement;
+    }
+
+    public function __toString():String{
+        return $this->nom." ".$this->typeRestaurant->__toString()." ".$this->cuisine->__toString()." Il ouvre à $this->horaires Num Siret: $this->siret Tel: $this->numTel".$this->emplacement->__toString();
     }
 }
 ?>
