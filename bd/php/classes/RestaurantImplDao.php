@@ -31,7 +31,6 @@ class RestaurantImplDao
             $idTypeCuisine = $c["idType"];
             $cuisine->addType($c["typeCuisine"]);
         }
-        print_r($restaurant);
         $idTypeRestaurant = $restaurant[0]["idType"];
         $typeRestaurant = $restaurant[0]["typeRestaurant"];
 
@@ -74,14 +73,66 @@ class RestaurantImplDao
     }
     public function getRestaurants(){
         $db = Connexion::connect();
-        $select = $db->prepare('SELECT * FROM RESTAURANT 
+        $selectRestaurants = $db->prepare('SELECT * FROM RESTAURANT 
                                 natural join CUISINE 
                                 natural join TYPERESTAURANT 
                                 natural join EMPLACEMENT');
-        $select->execute();
-        $answer = $select->fetchAll();
-        print_r($answer);
-        // Creer les restaurants
+        $selectCuisines = $db->prepare('SELECT idType, typeCuisine 
+                                FROM CUISINE NATURAL JOIN RESTAURANT 
+                                where idRestaurant = ?');
+        $selectRestaurants->execute();
+
+        $restaurants = array();
+
+        foreach($selectRestaurants->fetchAll() as $restaurant){
+            $idRestaurant = $restaurant["idRestaurant"];
+            $selectCuisines->execute(array($idRestaurant));
+
+            $cuisine = new Cuisine(0);
+            foreach ($selectCuisines->fetchAll() as $c){
+                $cuisine->addType($c["typeCuisine"]);
+            }
+
+            $idTypeRestaurant = $restaurant["idType"];
+            $typeRestaurant = $restaurant["typeRestaurant"];
+
+            $departement = $restaurant["departement"];
+            $commune = $restaurant["commune"];
+            $numDepartement = $restaurant["numDepartement"];
+
+            $nomRestaurant = $restaurant['nomRestaurant'];
+            $horaires = $restaurant['horaires'];
+            $siret = $restaurant['siret'];
+            $numTel = $restaurant['numTel'];
+            $urlWeb = $restaurant['urlWeb'];
+            $vegetarien = $restaurant['vegetarien'];
+            $vegan = $restaurant['vegan'];
+            $entreeFauteuilRoulant = $restaurant['entreeFauteuilRoulant'];
+            $accesInternet = $restaurant['accesInternet'];
+            $marqueRestaurant = $restaurant['marqueRestaurant'];
+            $nbEtoiles = $restaurant['nbEtoiles'];
+            $urlFacebook = $restaurant['urlFacebook'];
+            $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
+            $emplacement = new Emplacement($departement, $commune, $numDepartement);
+
+            $restaurants[] = new Restaurant($idRestaurant,
+                $nomRestaurant,
+                $horaires,
+                $siret,
+                $numTel,
+                $urlWeb,
+                $vegetarien,
+                $vegan,
+                $entreeFauteuilRoulant,
+                $accesInternet,
+                $marqueRestaurant,
+                $nbEtoiles,
+                $urlFacebook,
+                $typeRestaurant,
+                $cuisine,
+                $emplacement);
+        }
+        return $restaurants;
     }
     public function getRestaurantByType($typeRestaurant){
         $db = Connexion::connect();
@@ -134,5 +185,5 @@ class RestaurantImplDao
 }
 
 $dao = new RestaurantImplDao();
-$restaurants = $dao->getRestaurant(1);
-print($restaurants);
+$restaurants = $dao->getRestaurants();
+print_r($restaurants);
