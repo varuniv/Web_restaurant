@@ -1,6 +1,6 @@
 <?php
 
-namespace bd\classes;
+namespace bd\php\classes;
 class Cuisine{
     private int $idCuisine;
     private array $typesCuisine;

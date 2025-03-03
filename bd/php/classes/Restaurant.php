@@ -1,6 +1,6 @@
 <?php
 
-namespace bd\classes;
+namespace bd\php\classes;
 use bd\classes\TypeRestaurant;
 use bd\classes\Cuisine;
 use bd\classes\Emplacement;
