@@ -2,20 +2,24 @@
 $cssFile = "../styles/accueil.css";
 include 'header.php';
 
-function connexionBd() {
+function connexionBd(){
+    $serverName = "servinfo-maria";
+    $dbName="DBdelahaye";
+    $username = "delahaye";
+    $password = "delahaye";
+
+    $dsn="mysql:dbname=$dbName;host=$serverName";
     try {
-      $connexion = new PDO('sqlite:C:\Users\delah\Desktop\BUT-Info\SAE\Web_restaurant\Web_restaurant\data\bdd.sqlite');
-      $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
       return $connexion;
-    } catch (PDOException $e) {
-      echo "Erreur de connexion : " . $e->getMessage();
-      exit();
+    } catch(PDOException $e) {
+      echo "Connection failed: ".$e->getMessage().PHP_EOL;
     }
 }
 
 
 function getRestaurants($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM Restaurant R";
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM RESTAURANT R";
     $stmt = $connexion->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
@@ -23,14 +27,14 @@ function getRestaurants($connexion) {
 
 
 function getRestaurantsByName($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM Restaurant R ORDER BY nomResto ASC";
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM RESTAURANT R ORDER BY nomResto ASC";
     $stmt = $connexion->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
 
 function getRestaurantsByNote($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM Restaurant R ORDER BY nbEtoiles DESC";
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM RESTAURANT R ORDER BY nbEtoiles DESC";
     $stmt = $connexion->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();

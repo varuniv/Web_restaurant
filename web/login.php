@@ -2,14 +2,18 @@
 $cssFile = "../styles/login.css";
 include 'header.php';
 
-function connexionBd() {
+function connexionBd(){
+    $serverName = "servinfo-maria";
+    $dbName="DBdelahaye";
+    $username = "delahaye";
+    $password = "delahaye";
+
+    $dsn="mysql:dbname=$dbName;host=$serverName";
     try {
-      $connexion = new PDO('sqlite:C:\Users\delah\Desktop\BUT-Info\SAE\Web_restaurant\Web_restaurant\data\bdd.sqlite');
-      $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
       return $connexion;
-    } catch (PDOException $e) {
-      echo "Erreur de connexion : " . $e->getMessage();
-      exit();
+    } catch(PDOException $e) {
+      echo "Connection failed: ".$e->getMessage().PHP_EOL;
     }
 }
 
