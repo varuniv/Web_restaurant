@@ -26,7 +26,7 @@ class Cuisine{
         if(sizeof($this->typesCuisine)>0){
             $typesCuisinesString="";
             foreach($this->typesCuisine as $type){
-                $typesCuisinesString+=$type+", ";
+                $typesCuisinesString .= $type . ", ";
             }
             return "Cuisine numéro $this->idCuisine: $typesCuisinesString";
         }

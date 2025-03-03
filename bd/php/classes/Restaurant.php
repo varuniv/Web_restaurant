@@ -1,9 +1,9 @@
 <?php
 
 namespace bd\php\classes;
-use bd\classes\TypeRestaurant;
-use bd\classes\Cuisine;
-use bd\classes\Emplacement;
+use bd\php\classes\TypeRestaurant;
+use bd\php\classes\Cuisine;
+use bd\php\classes\Emplacement;
 class Restaurant{
     private int $idRestaurant;
     private String $nomRestaurant;
@@ -22,7 +22,7 @@ class Restaurant{
     private Cuisine $cuisine;
     private Emplacement $emplacement;
 
-    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
+    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine, Emplacement $emplacement){
         $this->idRestaurant=$idRestaurant;
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
@@ -38,6 +38,7 @@ class Restaurant{
         $this->urlFacebook=$urlFacebook;
         $this->typeRestaurant=$typeRestaurant;
         $this->cuisine=$cuisine;
+        $this->emplacement=$emplacement;
     }
 
     public function getId():int{
@@ -105,7 +106,7 @@ class Restaurant{
     }
 
     public function setNom(String $nom):void{
-        $this->nom=$nom;
+        $this->nomRestaurant=$nom;
     }
 
     public function setHoraires(String $horaires):void{
@@ -165,7 +166,10 @@ class Restaurant{
     }
 
     public function __toString():String{
-        return $this->nom." ".$this->typeRestaurant->__toString()." ".$this->cuisine->__toString()." Il ouvre à $this->horaires Num Siret: $this->siret Tel: $this->numTel".$this->emplacement->__toString();
+        return $this->nomRestaurant." ".$this->typeRestaurant->__toString().
+            " ".$this->cuisine->__toString().
+            " Il ouvre à $this->horaires Num Siret: $this->siret Tel: $this->numTel".
+            $this->emplacement->__toString();
     }
 }
 ?>
