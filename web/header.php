@@ -1,4 +1,11 @@
 <?php
+
+session_start();
+
+if (isset($_GET['deconnexion'])) {
+    $_SESSION['idUtilisateur'] = '';
+    header("Location: login.php");
+}
 ?>
 
 <!doctype html>
@@ -18,12 +25,17 @@
 </head>
 <body style="margin: 0;height:100%;background-color: #EFEFE1;">
     <header style="position: sticky;top: 0;">
-        <nav class = "navbar d-flex justify-content-between " style= "background-color: #065b16">
+        <nav class="navbar d-flex justify-content-between " style="background-color: #065b16">
             <div class="mx-3">
                 <a href="accueil.php"><img src="../img/logo_site.png" alt="Accueil" style="max-height:50px"></a>
             </div>
             <div class="mx-3">
-                <a class ="btn"style="background-color:#EFEFE1" href="login.php">Déconnexion</a>
+                <?php if (isset($_SESSION["idUtilisateur"]) && !empty($_SESSION["idUtilisateur"])): ?>
+                    <a class="btn" style="background-color:#EFEFE1" href="profil.php">Mon profil</a>
+                    <a class="btn" style="background-color:#EFEFE1" href="?deconnexion=true">Déconnexion</a>
+                <?php endif; ?>
             </div>
         </nav>
     </header>
+</body>
+</html>

@@ -43,9 +43,9 @@ if (isset($_POST['connect'])) {
 
             if ($password == $pswd) {
                 
-                $_SESSION["user_id"] = $id;
+                $_SESSION["idUtilisateur"] = $utilisateur["idUtilisateur"];
                 $_SESSION["pseudo"] = $pseudo;
-                $_SESSION["role"] = $utilisateur["role"];
+                $_SESSION["moderateur"] = $utilisateur["moderateur"];
                 header("Location: accueil.php");
             } else {
                 echo "Mot de passe incorrect.";

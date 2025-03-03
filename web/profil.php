@@ -4,7 +4,7 @@ include 'header.php';
 ?>
 
     <div class="container">
-        <h1>Michel Boulanger</h1>
+        <h1><?php echo htmlspecialchars($_SESSION["pseudo"]); ?></h1>
     </div>
     <div class="container">
         <h2>Vos avis :</h2>
