@@ -1,3 +1,4 @@
+-- Restaurants
 create table CUISINE(
     idCuisine int primary key auto_increment,
     typeCuisine varchar(42) unique
@@ -34,6 +35,7 @@ create table APPARTENIR(
     primary key(idRestaurant, idCuisine)
 );
 
+-- Avis des utilisateurs
 create table UTILISATEUR(
     idUtilisateur int primary key auto_increment,
     pseudo varchar(42),

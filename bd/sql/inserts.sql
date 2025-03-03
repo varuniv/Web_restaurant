@@ -22,6 +22,7 @@ insert into APPARTENIR values
     (3, 2),
     (4, 1),
     (5, 2);
+    
 
 insert into UTILISATEUR (pseudo, motDePasse, moderateur) values
 ('Alice123', 'passAlice', false),
