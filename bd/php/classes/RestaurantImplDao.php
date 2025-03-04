@@ -341,8 +341,10 @@ class RestaurantImplDao
     }
 
     // Delete
-    public function deleteRestaurant(int $id){
-        // Faire requete
+    public function deleteRestaurant(int $id): void{
+        $db = Connexion::connect();
+        $delete = $db->prepare('DELETE FROM RESTAURANT WHERE idRestaurant = ?');
+        $delete->execute(array($id));
     }
 }
 
