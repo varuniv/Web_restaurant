@@ -5,7 +5,6 @@ use bd\classes\TypeRestaurant;
 use bd\classes\Cuisine;
 use bd\classes\Emplacement;
 class Restaurant{
-    private int $idRestaurant;
     private String $nomRestaurant;
     private String $horaires;
     private String $siret;
