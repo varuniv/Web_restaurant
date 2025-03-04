@@ -331,8 +331,34 @@ class RestaurantImplDao
     }
 
     // Insert
-    public function insertRestaurant(Restaurant $restaurant){
-        // Faire requete
+    public function insertRestaurant(Restaurant $restaurant): void{
+        // Le restaurant doit avoir un type restaurant, une cuisine et un emplacement qui existe dans la base de données
+        // L'ID dans l'objet ne sert à rien.
+        $db = Connexion::connect();
+        $insertRestaurant = $db->prepare('INSERT INTO RESTAURANT(idRestaurant, idType, nomRestaurant, horaires, siret, numTel, urlWeb, numDepartement, vegetarien, vegan, entreeFauteuilRoulant, accesInternet, marqueRestaurant, nbEtoiles, urlFacebook) 
+                                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $id = $this->getMinUnusedRestId();
+        $insertRestaurant->execute(array(
+            $id,
+            $restaurant->getTypeRestaurant()->getId(),
+            $restaurant->getNom(),
+            $restaurant->getHoraires(),
+            $restaurant->getSiret(),
+            $restaurant->getNumTel(),
+            $restaurant->getUrlWeb(),
+            $restaurant->getEmplacement()->getNumDepartement(),
+            $restaurant->isVegetarien(),
+            $restaurant->isVegan(),
+            $restaurant->getEntreeFauteuilRoulant(),
+            $restaurant->hasAccesInternet(),
+            $restaurant->getMarqueRestaurant(),
+            $restaurant->getNbEtoiles(),
+            $restaurant->getUrlFacebook(),
+            ));
+
+        // Ne va pas marcher à cause de la facon dont est faite la classe Cuisine.
+        // $insertAppartenir = $db->prepare("INSERT INTO APPARTENIR(idRestaurant, idCuisine) values (?, ?)");
+        // $insertAppartenir->execute(array($id, $restaurant->getCuisine()->getId()));
     }
 
     // Update
@@ -346,8 +372,23 @@ class RestaurantImplDao
         $delete = $db->prepare('DELETE FROM RESTAURANT WHERE idRestaurant = ?');
         $delete->execute(array($id));
     }
+
+    private function getMinUnusedRestId(): int {
+        $db = Connexion::connect();
+        // Cette fonction va permettre d'avoir le plus petit ID possible d'utiliser
+        // C.A.D. s'il y a l'id 0 et 2 elle va renvoyer 1.
+        $selectID = $db->prepare("SELECT min(idRestaurant) as idRestaurant FROM RESTAURANT *
+                   WHERE idRestaurant+1 NOT IN (SELECT idRestaurant FROM RESTAURANT)
+                   AND EXISTS (SELECT 1 FROM RESTAURANT where idRestaurant = 0)");
+        $selectID->execute(array());
+        if ($id = $selectID->fetch()) {
+            return $id["idRestaurant"];
+        }
+        return 0;
+    }
 }
 
+$resto = new Restaurant(0, "test insert", "08:00-22:00", "test siret", "test num tel", "test url", true, false, false, true, "test marque", 5, "test url facebook", "", "", "");
 $dao = new RestaurantImplDao();
 $restaurants = $dao->getRestaurantsByTypeCuisine("Française");
 print_r($restaurants);
