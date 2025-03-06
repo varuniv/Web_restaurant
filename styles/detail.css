@@ -113,3 +113,35 @@ ul{
     padding: 1rem;
     border: solid black;
 }
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.donnerAvis_lab{
+    font-size: 1.5rem;
+    text-align: left;
+    margin-left: 4rem;
+    margin-bottom: 1rem;
+}
+
+.avis_input{
+    margin-bottom: 2rem;
+}
+
+.donnerNote_lab{
+    font-size: 1.5rem;
+    margin-right: 20rem;
+}
+
+.note_Rbtn{
+    margin-bottom: 2rem;
+}
+
+.btn_publier{
+    background-color: #065b16;
+    border-color: black;
+    color: white;
+}

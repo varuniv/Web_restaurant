@@ -26,7 +26,7 @@ function getUtilisateurByPseudo($pseudo, $connexion) {
 }
 
 
-if (isset($_POST['connect'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $pseudo = $_POST["pseudo"];
     $password = $_POST["password"];

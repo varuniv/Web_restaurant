@@ -9,6 +9,17 @@ if (isset($_GET['idResto'])) {
     exit();
 }
 
+function publierAvis($connexion, $idUtilisateur, $dateAvis, $idResto, $avis, $note) {
+    $sql = "INSERT INTO DONNER values (:idUtilisateur, :dateAvis, :idRestaurant, :avis, :note)";
+    $stmt = $connexion->prepare($sql);
+    $stmt->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
+    $stmt->bindParam(':dateAvis', $dateAvis, PDO::PARAM_STR);
+    $stmt->bindParam(':idRestaurant', $idResto, PDO::PARAM_INT);
+    $stmt->bindParam(':avis', $avis, PDO::PARAM_STR);
+    $stmt->bindParam(':note', $note, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 function connexionBd(){
     $serverName = "servinfo-maria";
     $dbName="DBdelahaye";
@@ -57,10 +68,19 @@ function getAvisRestaurant($connexion, $idR) {
 }
 
 $connexion= connexionBd();
+$idUtilisateur = $_SESSION["idUtilisateur"];
 $leRestaurant = getRestaurant($connexion, $idResto);
 $typeCuisine = getNomCuisine($connexion, $idResto);
 $emplacement = getEmplacement($connexion, $leRestaurant['commune']);
 $lesAvis = getAvisRestaurant($connexion, $idResto);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $avis = $_POST["avis"];
+    $note = (int)$_POST["note"];
+    $date = date('Y-m-d');
+    publierAvis($connexion, $idUtilisateur, $date, $idResto, $avis, $note);
+    $lesAvis = getAvisRestaurant($connexion, $idResto);
+}
 ?>
     <div class="container container_background">
         <div class="description_div">
@@ -168,6 +188,38 @@ $lesAvis = getAvisRestaurant($connexion, $idResto);
             <?php endif; ?>
         </ul>
     </div>
+    <?php if (isset($_SESSION["idUtilisateur"]) && !empty($_SESSION["idUtilisateur"])): ?>
+        <div class="container">
+            <form action="detail.php?idResto=<?php echo urlencode($idResto); ?>" method="POST">
+                <label class="donnerAvis_lab">Donner votre Avis :</label>
+                <input class="avis_input" type="text" name="avis" required>
+                <label class="donnerNote_lab">Note sur 5 :</label>
+                <div class="note_Rbtn">
+                    <label>
+                        <input type="radio" name="note" value="0" required> 0
+                    </label>
+                    <label>
+                        <input type="radio" name="note" value="1" required> 1
+                    </label>
+                    <label>
+                        <input type="radio" name="note" value="2" required> 2
+                    </label>
+                    <label>
+                        <input type="radio" name="note" value="3" required> 3
+                    </label>
+                    <label>
+                        <input type="radio" name="note" value="4" required> 4
+                    </label>
+                    <label>
+                        <input type="radio" name="note" value="5" required> 5
+                    </label>
+                </div>
+                <div class="submit-btn">
+                    <input id="publier" class="btn_publier" name="publier" type="submit" value="Publier">
+                </div>
+            </form>
+        </div>
+    <?php endif; ?>
 <?php
 include 'footer.php';
 ?>
