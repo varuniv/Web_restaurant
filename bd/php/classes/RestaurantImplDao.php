@@ -10,6 +10,7 @@ require_once __DIR__ . "/../Connexion.php";
 
 use bd\classes\Cuisine;
 use bd\php\Connexion;
+use PDO;
 
 class RestaurantImplDao
 {
@@ -443,6 +444,14 @@ class RestaurantImplDao
         $deleteResto->execute(array($id));
     }
 
+    public function getNomCuisine($idR): array {
+        $db = Connexion::connect();
+        $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = ?";
+        $selectNomCuisine = $db->prepare($sql);
+        $selectNomCuisine->execute(array($idR));
+        return $selectNomCuisine->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     private function getMinUnusedRestId(): int {
         $db = Connexion::connect();
         // Cette fonction va permettre d'avoir le plus petit ID possible d'utiliser
@@ -453,7 +462,6 @@ class RestaurantImplDao
         $selectID->execute(array());
         $result = $selectID->fetch();
         $id = ($result["idRestaurant"] != null) ? $result["idRestaurant"] : 0;
-        echo $id;
         return $id;
     }
 }
@@ -462,6 +470,7 @@ $emplacement = new Emplacement("", "Paris", 0);
 $typeRestaurant = new TypeRestaurant(2, "test");
 $resto = new Restaurant(0, "test insert", "08:00-22:00", 12, 0000000000, "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement);
 $dao = new RestaurantImplDao();
-$dao->insertRestaurant($resto);
+$dao->getNomCuisine(1);
+print_r($dao->getNomCuisine(2));
 //$restaurants = $dao->getRestaurantsByType("Fast Food");
 //print_r($restaurants);
