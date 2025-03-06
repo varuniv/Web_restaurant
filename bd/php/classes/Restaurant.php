@@ -1,9 +1,9 @@
 <?php
 
-namespace bd\classes;
-use bd\classes\TypeRestaurant;
-use bd\classes\Cuisine;
-use bd\classes\Emplacement;
+namespace bd\php\classes;
+use bd\php\classes\TypeRestaurant;
+use bd\php\classes\Cuisine;
+use bd\php\classes\Emplacement;
 
 class Restaurant{
     private String $nomRestaurant;
@@ -22,8 +22,7 @@ class Restaurant{
     private array $cuisines;
     private Emplacement $emplacement;
 
-    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant){
-        $this->idRestaurant=$idRestaurant;
+    public function __construct(String $nomRestaurant, String $horaires, String $siret, String $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant){
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
         $this->siret=$siret;
@@ -48,11 +47,11 @@ class Restaurant{
         return $this->horaires;
     }
 
-    public function getSiret():int{
+    public function getSiret():String{
         return $this->siret;
     }
 
-    public function getNumTel():int{
+    public function getNumTel():String{
         return $this->numTel;
     }
 
@@ -112,7 +111,7 @@ class Restaurant{
         $this->siret=$siret;
     }
 
-    public function setNumTel(int $numTel):void{
+    public function setNumTel(String $numTel):void{
         $this->numTel=$numTel;
     }
 

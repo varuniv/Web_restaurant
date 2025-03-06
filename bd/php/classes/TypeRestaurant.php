@@ -1,6 +1,6 @@
 <?php
 
-namespace bd\classes;
+namespace bd\php\classes;
 class TypeRestaurant{
     private String $type;
 

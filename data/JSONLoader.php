@@ -1,7 +1,15 @@
 <?php
 
 namespace data;
+require_once __DIR__ . '/../bd/php/classes/Emplacement.php';
+require_once __DIR__ . '/../bd/php/classes/TypeRestaurant.php';
+require_once __DIR__ . '/../bd/php/classes/Restaurant.php';
+require_once __DIR__ . '/../bd/php/classes/Cuisine.php';
+
 use bd\php\classes\Emplacement;
+use bd\php\classes\TypeRestaurant;
+use bd\php\classes\Restaurant;
+use bd\php\classes\Cuisine;
 
 class JSONLoader{
     private static array $dataArray;
@@ -21,46 +29,36 @@ class JSONLoader{
     public static function parse():array{
         $dataObjects=[];
         foreach(self::$dataArray as $line){
-            echo "Type: ".$line["type"].PHP_EOL;
-            echo "Name: ".$line["name"].PHP_EOL;
-            echo "Brand: ".$line["brand"].PHP_EOL;
-            echo "Hours: ".$line["opening_hours"].PHP_EOL;
-            echo "Cuisine: ".$line["cuisine"].PHP_EOL;
-            echo "Vegetarien: ".$line["vegetarien"].PHP_EOL;
-            echo "Vegan: ".$line["vegan"].PHP_EOL;
-            echo "Internet: ".$line["internet_access"].PHP_EOL;
-            echo "Stars: ".$line["stars"].PHP_EOL;
-            echo "Siret: ".$line["siret"].PHP_EOL;
-            echo "Phone: ".$line["phone"].PHP_EOL;
-            echo "Website: ".$line["website"].PHP_EOL;
-            echo "Facebook: ".$line["facebook"].PHP_EOL;
-            echo "Region: ".$line["region"].PHP_EOL;
-            echo "Dep: ".$line["departement"].PHP_EOL;
-            echo "Num dep: ".$line["code_departement"].PHP_EOL;
-            echo "Commune: ".$line["commune"].PHP_EOL;
-            $typeRestaurant=$line["type"];
-            $nomRestaurant=$line["name"];
-            $marqueRestaurant=$line["brand"];
-            $horaires=$line["opening_hours"];
-            $cuisine=$line["cuisine"];
-            $vegetarien=$line["vegetarien"];
-            $vegan=$line["vegan"];
-            $entreeFauteuilRoulant=$line["wheelchair"];
-            $accesInternet=$line["internet_access"];
-            $etoiles=$line["stars"];
-            $siret=$line["siret"];
-            $tel=$line["phone"];
-            $urlWeb=$line["website"];
-            $facebook=$line["facebook"];
-            $region=$line["region"];
-            $departement=$line["departement"];
-            $numDepartement=$line["code_departement"];
-            $commune=$line["commune"];
+            $typeRestaurant = $line["type"] ?? "Inconnu";
+            $nomRestaurant = $line["name"] ?? "Sans nom";
+            $marqueRestaurant = $line["brand"] ?? "Non spécifié";
+            $horaires = $line["opening_hours"] ?? "Non spécifié";
+            $vegetarien = isset($line["vegetarian"]) ? (bool)$line["vegetarian"] : false;
+            $vegan = isset($line["vegan"]) ? (bool)$line["vegan"] : false;
+            $entreeFauteuilRoulant = isset($line["wheelchair"]) ? (bool)$line["wheelchair"] : false;
+            $accesInternet = isset($line["internet_access"]) ? (bool)$line["internet_access"] : false;
+            $etoiles = isset($line["stars"]) ? (int)$line["stars"] : 0;
+            $siret = $line["siret"] ?? "Inconnu";
+            $tel = $line["phone"] ?? "Non renseigné";
+            $urlWeb = $line["website"] ?? "";
+            $facebook = $line["facebook"] ?? "";
+            $departement = $line["departement"] ?? "Non renseigné";
+            $numDepartement = isset($line["code_departement"]) ? (int)$line["code_departement"] : 0;
+            $commune = $line["commune"] ?? "Non renseigné";
 
             // Création des objets
             $emplacement=new Emplacement($departement, $commune, $numDepartement);
             $type=new TypeRestaurant($typeRestaurant);
-            $restaurant=new Restaurant($nomRestaurant, $horaires, $siret, $tel, $urlWeb, $vegetarien, $vegan, $entreeFauteuilRoulant, $accesInternet, $marqueRestaurant, $etoiles, $facebook, $type, )
+            $restaurant=new Restaurant($nomRestaurant, $horaires, $siret, $tel, $urlWeb, $vegetarien, $vegan, $entreeFauteuilRoulant, $accesInternet, $marqueRestaurant, $etoiles, $facebook, $type);
+            $cuisines = isset($line["cuisine"]) ? $line["cuisine"]:null;
+            if($cuisines!=null){
+                foreach($cuisines as $cuisine){
+                    $cuisineObject=new Cuisine($cuisine);
+                    array_push($dataObjects, $cuisineObject);
+                    $restaurant->addCuisine($cuisineObject);
+                }
+            }
+            array_push($dataObjects, $emplacement, $type, $restaurant);
         }
         return $dataObjects;
     }

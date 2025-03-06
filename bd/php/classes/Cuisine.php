@@ -1,17 +1,11 @@
 <?php
 
-namespace bd\classes;
+namespace bd\php\classes;
 class Cuisine{
-    private int $idCuisine;
     private String $typeCuisine;
 
-    public function __construct(int $idCuisine, String $typeCuisine){
-        $this->idCuisine=$idCuisine;
+    public function __construct(String $typeCuisine){
         $this->typeCuisine=$typeCuisine;
-    }
-
-    public function getId():int{
-        return $this->id;
     }
 
     public function getTypeCuisine():String{
