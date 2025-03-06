@@ -8,6 +8,7 @@ require_once __DIR__ . "/Emplacement.php";
 require_once __DIR__ . "/Restaurant.php";
 require_once __DIR__ . "/../Connexion.php";
 
+use bd\classes\Cuisine;
 use bd\php\Connexion;
 
 class RestaurantImplDao
@@ -352,9 +353,26 @@ class RestaurantImplDao
         // Le restaurant doit avoir un type restaurant, une cuisine et un emplacement qui existe dans la base de données
         // L'ID dans l'objet ne sert à rien.
         $db = Connexion::connect();
-        $insertRestaurant = $db->prepare('INSERT INTO RESTAURANT(idRestaurant, idType, nomRestaurant, horaires, siret, numTel, urlWeb, numDepartement, vegetarien, vegan, entreeFauteuilRoulant, accesInternet, marqueRestaurant, nbEtoiles, urlFacebook) 
+        $insertRestaurant = $db->prepare('INSERT INTO RESTAURANT(idRestaurant, idType, nomRestaurant, horaires, siret, numTel, urlWeb, commune, vegetarien, vegan, entreeFauteuilRoulant, accesInternet, marqueRestaurant, nbEtoiles, urlFacebook) 
                                 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $id = $this->getMinUnusedRestId();
+
+        print($restaurant->getNom() . "\n" .
+            $restaurant->getTypeRestaurant()->getId() . "\n" .
+            $restaurant->getHoraires() . "\n" .
+            $restaurant->getSiret() . "\n" .
+            $restaurant->getNumTel() . "\n" .
+            $restaurant->getUrlWeb() . "\n" .
+            $restaurant->getEmplacement()->getNumDepartement() . "\n" .
+            "Vegetarien : " . $restaurant->isVegetarien() . "\n" .
+            "Vegan : " . (int)$restaurant->isVegan() . "\n" .
+            $restaurant->getEntreeFauteuilRoulant() . "\n" .
+            $restaurant->hasAccesInternet() . "\n" .
+            $restaurant->getMarqueRestaurant() . "\n" .
+            $restaurant->getNbEtoiles() . "\n" .
+            $restaurant->getUrlFacebook() . "\n" .
+            $id);
+
         $insertRestaurant->execute(array(
             $id,
             $restaurant->getTypeRestaurant()->getId(),
@@ -363,19 +381,21 @@ class RestaurantImplDao
             $restaurant->getSiret(),
             $restaurant->getNumTel(),
             $restaurant->getUrlWeb(),
-            $restaurant->getEmplacement()->getNumDepartement(),
-            $restaurant->isVegetarien(),
-            $restaurant->isVegan(),
-            $restaurant->getEntreeFauteuilRoulant(),
-            $restaurant->hasAccesInternet(),
+            $restaurant->getEmplacement()->getCommune(),
+            (int)$restaurant->isVegetarien(),
+            (int)$restaurant->isVegan(),
+            (int)$restaurant->getEntreeFauteuilRoulant(),
+            (int)$restaurant->hasAccesInternet(),
             $restaurant->getMarqueRestaurant(),
             $restaurant->getNbEtoiles(),
             $restaurant->getUrlFacebook(),
             ));
 
         // Ne va pas marcher à cause de la facon dont est faite la classe Cuisine.
-        // $insertAppartenir = $db->prepare("INSERT INTO APPARTENIR(idRestaurant, idType) values (?, ?)");
-        // $insertAppartenir->execute(array($id, $restaurant->getCuisine()->getId()));
+        foreach ($restaurant->getCuisines() as $cuisine){
+            $insertAppartenir = $db->prepare("INSERT INTO APPARTENIR(idRestaurant, idType) values (?, ?)");
+            $insertAppartenir->execute(array($id, $cuisine->getId()));
+        }
     }
 
     // Update
@@ -445,7 +465,7 @@ class RestaurantImplDao
 
 $emplacement = new Emplacement("", "Paris", 0);
 $typeRestaurant = new TypeRestaurant(2, "test");
-$resto = new Restaurant(0, "test insert", "08:00-22:00", 12, 0000000000, "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement, "");
+$resto = new Restaurant(0, "test insert", "08:00-22:00", 12, 0000000000, "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement);
 $dao = new RestaurantImplDao();
 $dao->insertRestaurant($resto);
 //$restaurants = $dao->getRestaurantsByType("Fast Food");
