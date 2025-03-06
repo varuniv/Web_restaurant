@@ -1,6 +1,8 @@
 <?php
 
 namespace data;
+use bd\php\classes\Emplacement;
+
 class JSONLoader{
     private static array $dataArray;
 
@@ -43,11 +45,22 @@ class JSONLoader{
             $cuisine=$line["cuisine"];
             $vegetarien=$line["vegetarien"];
             $vegan=$line["vegan"];
+            $entreeFauteuilRoulant=$line["wheelchair"];
             $accesInternet=$line["internet_access"];
             $etoiles=$line["stars"];
             $siret=$line["siret"];
             $tel=$line["phone"];
-            $siteWeb=$line["website"];
+            $urlWeb=$line["website"];
+            $facebook=$line["facebook"];
+            $region=$line["region"];
+            $departement=$line["departement"];
+            $numDepartement=$line["code_departement"];
+            $commune=$line["commune"];
+
+            // Création des objets
+            $emplacement=new Emplacement($departement, $commune, $numDepartement);
+            $type=new TypeRestaurant($typeRestaurant);
+            $restaurant=new Restaurant($nomRestaurant, $horaires, $siret, $tel, $urlWeb, $vegetarien, $vegan, $entreeFauteuilRoulant, $accesInternet, $marqueRestaurant, $etoiles, $facebook, $type, )
         }
         return $dataObjects;
     }

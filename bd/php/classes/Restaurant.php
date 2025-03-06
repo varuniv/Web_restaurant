@@ -21,8 +21,7 @@ class Restaurant{
     private Cuisine $cuisine;
     private Emplacement $emplacement;
 
-    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
-        $this->idRestaurant=$idRestaurant;
+    public function __construct(String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
         $this->siret=$siret;
@@ -37,10 +36,6 @@ class Restaurant{
         $this->urlFacebook=$urlFacebook;
         $this->typeRestaurant=$typeRestaurant;
         $this->cuisine=$cuisine;
-    }
-
-    public function getId():int{
-        return $this->idRestaurant;
     }
 
     public function getNom():String{
