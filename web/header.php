@@ -33,6 +33,8 @@ if (isset($_GET['deconnexion'])) {
                 <?php if (isset($_SESSION["idUtilisateur"]) && !empty($_SESSION["idUtilisateur"])): ?>
                     <a class="btn" style="background-color:#EFEFE1" href="profil.php">Mon profil</a>
                     <a class="btn" style="background-color:#EFEFE1" href="?deconnexion=true">Déconnexion</a>
+                <?php else : ?>
+                    <a class="btn" style="background-color:#EFEFE1" href="login.php">Se connecter</a>
                 <?php endif; ?>
             </div>
         </nav>

@@ -4,10 +4,27 @@ h1{
     text-align: center;
 }
 
+h2{
+    margin-bottom: 2rem;
+}
+
+h4{
+    text-decoration: underline;
+}
+
+ul{
+    list-style-type:none;
+}
+
 .note_utilisateur{
     display: flex;
     align-items: center;
     margin-left: 4rem;
+}
+
+.date_avis{
+    width: 70%;
+    text-align: center;
 }
 
 .avis_utilisateur{
