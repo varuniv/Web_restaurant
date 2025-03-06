@@ -4,6 +4,7 @@ namespace bd\classes;
 use bd\classes\TypeRestaurant;
 use bd\classes\Cuisine;
 use bd\classes\Emplacement;
+
 class Restaurant{
     private int $idRestaurant;
     private String $nomRestaurant;
@@ -19,10 +20,10 @@ class Restaurant{
     private int $nbEtoiles;
     private String $urlFacebook;
     private TypeRestaurant $typeRestaurant;
-    private Cuisine $cuisine;
+    private array $cuisines;
     private Emplacement $emplacement;
 
-    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
+    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant){
         $this->idRestaurant=$idRestaurant;
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
@@ -37,7 +38,7 @@ class Restaurant{
         $this->nbEtoiles=$nbEtoiles;
         $this->urlFacebook=$urlFacebook;
         $this->typeRestaurant=$typeRestaurant;
-        $this->cuisine=$cuisine;
+        $this->cuisines=[];
     }
 
     public function getId():int{
@@ -96,12 +97,12 @@ class Restaurant{
         return $this->typeRestaurant;
     }
 
-    public function getCuisine():Cuisine{
-        return $this->cuisine;
-    }
-
     public function getEmplacement():Emplacement{
         return $this->empacement;
+    }
+
+    public function getCuisines():array{
+        return $this->cuisines;
     }
 
     public function setNom(String $nom):void{
@@ -156,12 +157,16 @@ class Restaurant{
         $this->typeRestaurant=$typeRestaurant;
     }
 
-    public function setCuisine(Cuisine $cuisine):void{
-        $this->cuisine=$cuisine;
+    public function setCuisines(array $cuisines):void{
+        $this->cuisines=$cuisines;
     }
 
     public function setEmplacement(Emplacement $emplacement):void{
         $this->emplacement=$emplacement;
+    }
+
+    public function addCuisine(Cuisine $cuisine):void{
+        array_push($this->cuisines, $cuisine);
     }
 
     public function __toString():String{
