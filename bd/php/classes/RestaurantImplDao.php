@@ -394,7 +394,13 @@ class RestaurantImplDao
         }
     }
 
-    public function addCuisine(Cuisine $cuisine): void{
+    public function addCuisineTo(int $idRest, Cuisine $cuisine): void{
+        $db = Connexion::connect();
+        $addCuisine = $db->prepare("INSERT INTO APPARTENIR(idRestaurant, idType) values (?, ?)");
+        $addCuisine->execute(array($idRest, $cuisine->getId()));
+    }
+
+    public function insertCuisine(Cuisine $cuisine): void{
         $db = Connexion::connect();
         $insertCuisine = $db->prepare("INSERT INTO CUISINE(typeCuisine) values (?)");
         $insertCuisine->execute(array($cuisine->getTypeCuisine()));
@@ -476,7 +482,7 @@ $emplacement = new Emplacement("", "Paris", 0);
 $typeRestaurant = new TypeRestaurant(2, "test");
 $resto = new Restaurant(0, "test insert", "08:00-22:00", 12, 0000000000, "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement);
 $dao = new RestaurantImplDao();
-$dao->getNomCuisine(1);
-print_r($dao->getNomCuisine(2));
+$cuisine = new Cuisine(0, "Allemande");
+$dao->insertCuisine($cuisine);
 //$restaurants = $dao->getRestaurantsByType("Fast Food");
 //print_r($restaurants);
