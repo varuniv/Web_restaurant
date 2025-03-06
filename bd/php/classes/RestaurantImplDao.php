@@ -7,6 +7,7 @@ require_once __DIR__ . "/TypeRestaurant.php";
 require_once __DIR__ . "/Emplacement.php";
 require_once __DIR__ . "/Restaurant.php";
 require_once __DIR__ . "/../Connexion.php";
+
 use bd\php\Connexion;
 
 class RestaurantImplDao
@@ -55,7 +56,8 @@ class RestaurantImplDao
         $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
         $emplacement = new Emplacement($departement, $commune, $numDepartement);
 
-        return new Restaurant($idRestaurant,
+        $restaurant = new Restaurant(
+            $idRestaurant,
             $nomRestaurant,
             $horaires,
             $siret,
@@ -69,8 +71,14 @@ class RestaurantImplDao
             $nbEtoiles,
             $urlFacebook,
             $typeRestaurant,
-            $cuisine,
             $emplacement);
+
+        foreach ($selectCuisines->fetchAll() as $c){
+            $cuisine = new Cuisine($c['idType'], $c['typeCuisine']);
+            $restaurant->addCuisine($cuisine);
+        }
+
+        return $restaurant;
     }
     public function getRestaurants(): array
     {
@@ -88,11 +96,6 @@ class RestaurantImplDao
         foreach($selectRestaurants->fetchAll() as $restaurant){
             $idRestaurant = $restaurant["idRestaurant"];
             $selectCuisines->execute(array($idRestaurant));
-
-            $cuisine = new Cuisine(0);
-            foreach ($selectCuisines->fetchAll() as $c){
-                $cuisine->addType($c["typeCuisine"]);
-            }
 
             $idTypeRestaurant = $restaurant["idType"];
             $typeRestaurant = $restaurant["typeRestaurant"];
@@ -116,7 +119,8 @@ class RestaurantImplDao
             $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
             $emplacement = new Emplacement($departement, $commune, $numDepartement);
 
-            $restaurants[] = new Restaurant($idRestaurant,
+            $restaurant = new Restaurant(
+                $idRestaurant,
                 $nomRestaurant,
                 $horaires,
                 $siret,
@@ -130,8 +134,14 @@ class RestaurantImplDao
                 $nbEtoiles,
                 $urlFacebook,
                 $typeRestaurant,
-                $cuisine,
                 $emplacement);
+
+            foreach ($selectCuisines->fetchAll() as $c){
+                $cuisine = new Cuisine($c['idType'], $c['typeCuisine']);
+                $restaurant->addCuisine($cuisine);
+            }
+
+            $restaurants[] = $restaurant;
         }
         return $restaurants;
     }
@@ -153,11 +163,6 @@ class RestaurantImplDao
             $idRestaurant = $restaurant["idRestaurant"];
             $selectCuisines->execute(array($idRestaurant));
 
-            $cuisine = new Cuisine(0);
-            foreach ($selectCuisines->fetchAll() as $c){
-                $cuisine->addType($c["typeCuisine"]);
-            }
-
             $idTypeRestaurant = $restaurant["idType"];
             $typeRestaurant = $restaurant["typeRestaurant"];
 
@@ -180,7 +185,8 @@ class RestaurantImplDao
             $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
             $emplacement = new Emplacement($departement, $commune, $numDepartement);
 
-            $restaurants[] = new Restaurant($idRestaurant,
+            $restaurant = new Restaurant(
+                $idRestaurant,
                 $nomRestaurant,
                 $horaires,
                 $siret,
@@ -194,8 +200,14 @@ class RestaurantImplDao
                 $nbEtoiles,
                 $urlFacebook,
                 $typeRestaurant,
-                $cuisine,
                 $emplacement);
+
+            foreach ($selectCuisines->fetchAll() as $c){
+                $cuisine = new Cuisine($c['idType'], $c['typeCuisine']);
+                $restaurant->addCuisine($cuisine);
+            }
+
+            $restaurants[] = $restaurant;
         }
         return $restaurants;
     }
@@ -216,12 +228,6 @@ class RestaurantImplDao
 
         foreach($selectRestaurants->fetchAll() as $restaurant){
             $idRestaurant = $restaurant["idRestaurant"];
-            $selectCuisines->execute(array($idRestaurant));
-
-            $cuisine = new Cuisine(0);
-            foreach ($selectCuisines->fetchAll() as $c){
-                $cuisine->addType($c["typeCuisine"]);
-            }
 
             $idTypeRestaurant = $restaurant["idType"];
             $typeRestaurant = $restaurant["typeRestaurant"];
@@ -245,7 +251,8 @@ class RestaurantImplDao
             $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
             $emplacement = new Emplacement($departement, $commune, $numDepartement);
 
-            $restaurants[] = new Restaurant($idRestaurant,
+            $restaurant = new Restaurant(
+                $idRestaurant,
                 $nomRestaurant,
                 $horaires,
                 $siret,
@@ -259,8 +266,16 @@ class RestaurantImplDao
                 $nbEtoiles,
                 $urlFacebook,
                 $typeRestaurant,
-                $cuisine,
                 $emplacement);
+
+            echo $idRestaurant;
+            $selectCuisines->execute(array($idRestaurant));
+            foreach ($selectCuisines->fetchAll() as $c){
+                $cuisine = new Cuisine($c['idType'], $c['typeCuisine']);
+                $restaurant->addCuisine($cuisine);
+            }
+
+            $restaurants[] = $restaurant;
         }
         return $restaurants;
     }
@@ -283,11 +298,6 @@ class RestaurantImplDao
             $idRestaurant = $restaurant["idRestaurant"];
             $selectCuisines->execute(array($idRestaurant));
 
-            $cuisine = new Cuisine(0);
-            foreach ($selectCuisines->fetchAll() as $c){
-                $cuisine->addType($c["typeCuisine"]);
-            }
-
             $idTypeRestaurant = $restaurant["idType"];
             $typeRestaurant = $restaurant["typeRestaurant"];
 
@@ -310,7 +320,9 @@ class RestaurantImplDao
             $typeRestaurant  = new TypeRestaurant($idTypeRestaurant, $typeRestaurant);
             $emplacement = new Emplacement($departement, $commune, $numDepartement);
 
-            $restaurants[] = new Restaurant($idRestaurant,
+
+            $restaurant = new Restaurant(
+                $idRestaurant,
                 $nomRestaurant,
                 $horaires,
                 $siret,
@@ -324,8 +336,13 @@ class RestaurantImplDao
                 $nbEtoiles,
                 $urlFacebook,
                 $typeRestaurant,
-                $cuisine,
                 $emplacement);
+
+            foreach ($selectCuisines->fetchAll() as $c){
+                $cuisine = new Cuisine($c['idType'], $c['typeCuisine']);
+                $restaurant->addCuisine($cuisine);
+            }
+            $restaurants[] = $restaurant;
         }
         return $restaurants;
     }
@@ -357,13 +374,14 @@ class RestaurantImplDao
             ));
 
         // Ne va pas marcher à cause de la facon dont est faite la classe Cuisine.
-        // $insertAppartenir = $db->prepare("INSERT INTO APPARTENIR(idRestaurant, idCuisine) values (?, ?)");
+        // $insertAppartenir = $db->prepare("INSERT INTO APPARTENIR(idRestaurant, idType) values (?, ?)");
         // $insertAppartenir->execute(array($id, $restaurant->getCuisine()->getId()));
     }
 
     // Update
     public function updateRestaurant(int $id, Restaurant $newRestaurant){
         $db = Connexion::connect();
+        echo $newRestaurant;
         $update = $db->prepare('UPDATE RESTAURANT SET 
                       nomRestaurant = ?,
                       idType = ?,
@@ -371,7 +389,7 @@ class RestaurantImplDao
                       siret = ?,
                       numTel = ?,
                       urlWeb = ?,
-                      numDepartement = ?,
+                      commune = ?,
                       vegetarien = ?,
                       vegan = ?,
                       entreeFauteuilRoulant = ?,
@@ -402,26 +420,33 @@ class RestaurantImplDao
     // Delete
     public function deleteRestaurant(int $id): void{
         $db = Connexion::connect();
-        $delete = $db->prepare('DELETE FROM RESTAURANT WHERE idRestaurant = ?');
-        $delete->execute(array($id));
+        $deleteDonner = $db->prepare('DELETE FROM DONNER WHERE idRestaurant = ?');
+        $deleteDonner->execute(array($id));
+        $deleteAppartenir = $db->prepare('DELETE FROM APPARTENIR WHERE idRestaurant = ?');
+        $deleteAppartenir->execute(array($id));
+        $deleteResto = $db->prepare('DELETE FROM RESTAURANT WHERE idRestaurant = ?');
+        $deleteResto->execute(array($id));
     }
 
     private function getMinUnusedRestId(): int {
         $db = Connexion::connect();
         // Cette fonction va permettre d'avoir le plus petit ID possible d'utiliser
         // C.A.D. s'il y a l'id 0 et 2 elle va renvoyer 1.
-        $selectID = $db->prepare("SELECT min(idRestaurant) as idRestaurant FROM RESTAURANT *
-                   WHERE idRestaurant+1 NOT IN (SELECT idRestaurant FROM RESTAURANT)
+        $selectID = $db->prepare("SELECT min(idRestaurant) as idRestaurant FROM RESTAURANT 
+                   WHERE idRestaurant+1 NOT IN (SELECT idRestaurant FROM RESTAURANT) 
                    AND EXISTS (SELECT 1 FROM RESTAURANT where idRestaurant = 0)");
         $selectID->execute(array());
-        if ($id = $selectID->fetch()) {
-            return $id["idRestaurant"];
-        }
-        return 0;
+        $result = $selectID->fetch();
+        $id = ($result["idRestaurant"] != null) ? $result["idRestaurant"] : 0;
+        echo $id;
+        return $id;
     }
 }
 
-$resto = new Restaurant(0, "test insert", "08:00-22:00", "test siret", "test num tel", "test url", true, false, false, true, "test marque", 5, "test url facebook", "", "", "");
+$emplacement = new Emplacement("", "Paris", 0);
+$typeRestaurant = new TypeRestaurant(2, "test");
+$resto = new Restaurant(0, "test insert", "08:00-22:00", 12, 0000000000, "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement, "");
 $dao = new RestaurantImplDao();
-$restaurants = $dao->getRestaurantsByTypeCuisine("Française");
-print_r($restaurants);
+$dao->insertRestaurant($resto);
+//$restaurants = $dao->getRestaurantsByType("Fast Food");
+//print_r($restaurants);
