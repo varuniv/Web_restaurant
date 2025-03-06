@@ -6,7 +6,6 @@ use bd\classes\Cuisine;
 use bd\classes\Emplacement;
 
 class Restaurant{
-    private int $idRestaurant;
     private String $nomRestaurant;
     private String $horaires;
     private String $siret;
@@ -39,10 +38,6 @@ class Restaurant{
         $this->urlFacebook=$urlFacebook;
         $this->typeRestaurant=$typeRestaurant;
         $this->cuisines=[];
-    }
-
-    public function getId():int{
-        return $this->idRestaurant;
     }
 
     public function getNom():String{

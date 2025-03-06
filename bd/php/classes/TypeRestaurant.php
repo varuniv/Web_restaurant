@@ -2,16 +2,10 @@
 
 namespace bd\classes;
 class TypeRestaurant{
-    private int $idType;
     private String $type;
 
-    public function __construct(int $idType, String $type){
-        $this->idType=$idType;
+    public function __construct(String $type){
         $this->type=$type;
-    }
-
-    public function getId():int{
-        return $this->id;
     }
 
     public function getType():String{
