@@ -1,70 +1,13 @@
 <?php
 $cssFile = "../styles/detail.css";
 include 'header.php';
+require_once("../bd/Selects.php");
 
 if (isset($_GET['idResto'])) {
     $idResto = $_GET['idResto'];
 } else {
     echo "Erreur : aucun restaurant sélectionné.";
     exit();
-}
-
-function publierAvis($connexion, $idUtilisateur, $dateAvis, $idResto, $avis, $note) {
-    $sql = "INSERT INTO DONNER values (:idUtilisateur, :dateAvis, :idRestaurant, :avis, :note)";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
-    $stmt->bindParam(':dateAvis', $dateAvis, PDO::PARAM_STR);
-    $stmt->bindParam(':idRestaurant', $idResto, PDO::PARAM_INT);
-    $stmt->bindParam(':avis', $avis, PDO::PARAM_STR);
-    $stmt->bindParam(':note', $note, PDO::PARAM_INT);
-    $stmt->execute();
-}
-
-function connexionBd(){
-    $serverName = "servinfo-maria";
-    $dbName="DBdelahaye";
-    $username = "delahaye";
-    $password = "delahaye";
-
-    $dsn="mysql:dbname=$dbName;host=$serverName";
-    try {
-      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
-      return $connexion;
-    } catch(PDOException $e) {
-      echo "Connection failed: ".$e->getMessage().PHP_EOL;
-    }
-}
-
-function getRestaurant($connexion, $id) {
-    $sql = "SELECT * FROM RESTAURANT WHERE idRestaurant = :idR ";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':idR', $id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function getEmplacement($connexion, $commune){
-    $sql = "SELECT * FROM EMPLACEMENT WHERE commune = :commune";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':commune', $commune, PDO::PARAM_STR);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-function getNomCuisine($connexion, $idR) {
-    $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = :idR";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function getAvisRestaurant($connexion, $idR) {
-    $sql = "SELECT U.pseudo, D.dateAvis, D.avis, D.note FROM DONNER D JOIN UTILISATEUR U ON D.idUtilisateur = U.idUtilisateur WHERE D.idRestaurant = :idR ORDER BY D.dateAvis DESC";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 $connexion= connexionBd();

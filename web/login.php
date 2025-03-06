@@ -1,60 +1,29 @@
 <?php
 $cssFile = "../styles/login.css";
 include 'header.php';
+require_once("../bd/Selects.php");
 
-function connexionBd(){
-    $serverName = "servinfo-maria";
-    $dbName="DBdelahaye";
-    $username = "delahaye";
-    $password = "delahaye";
-
-    $dsn="mysql:dbname=$dbName;host=$serverName";
-    try {
-      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
-      return $connexion;
-    } catch(PDOException $e) {
-      echo "Connection failed: ".$e->getMessage().PHP_EOL;
-    }
-}
-
-function getUtilisateurByPseudo($pseudo, $connexion) {
-    $sql = "SELECT * FROM UTILISATEUR WHERE pseudo = :pseudo";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $pseudo = $_POST["pseudo"];
     $password = $_POST["password"];
-
     $connexion = connexionBd();
-
-    if ($connexion) {
-        
+    if ($connexion){
         $utilisateur = getUtilisateurByPseudo($pseudo, $connexion);
-
-        if ($utilisateur) {
-            
+        if ($utilisateur){
             $pswd = $utilisateur["motDePasse"];
-
-            if ($password == $pswd) {
-                
+            if ($password == $pswd){
                 $_SESSION["idUtilisateur"] = $utilisateur["idUtilisateur"];
                 $_SESSION["pseudo"] = $pseudo;
                 $_SESSION["moderateur"] = $utilisateur["moderateur"];
                 header("Location: accueil.php");
-            } else {
+            }
+            else {
                 echo "Mot de passe incorrect.";
             }
-        } else {
-            echo "Aucun utilisateur trouvé avec cet pseudo.";
         }
-    } else {
-        echo "Erreur de connexion à la base de données.";
+        else {
+            echo "Aucun utilisateur trouvé avec ce pseudo.";
+        }
     }
 }
 ?>

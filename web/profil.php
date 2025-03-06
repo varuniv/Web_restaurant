@@ -1,33 +1,9 @@
 <?php
 $cssFile = "../styles/profil.css";
 include 'header.php';
-
-
-function connexionBd(){
-    $serverName = "servinfo-maria";
-    $dbName="DBdelahaye";
-    $username = "delahaye";
-    $password = "delahaye";
-
-    $dsn="mysql:dbname=$dbName;host=$serverName";
-    try {
-      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
-      return $connexion;
-    } catch(PDOException $e) {
-      echo "Connection failed: ".$e->getMessage().PHP_EOL;
-    }
-}
-
-function getAvisUtilisateur($connexion, $idU) {
-    $sql = "SELECT D.dateAvis, D.avis, D.note, R.nomRestaurant FROM DONNER D JOIN RESTAURANT R ON D.idRestaurant = R.idRestaurant WHERE D.idUtilisateur = :idU ORDER BY D.dateAvis DESC";
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':idU', $idU, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+require_once("../bd/Selects.php");
 
 $idUtilisateur = $_SESSION["idUtilisateur"];
-
 $connexion= connexionBd();
 $avisUtilisateur = getAvisUtilisateur($connexion, $idUtilisateur);
 

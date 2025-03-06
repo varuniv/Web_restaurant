@@ -1,42 +1,7 @@
 <?php
 $cssFile = "../styles/accueil.css";
 include 'header.php';
-
-function connexionBd(){
-    $serverName = "servinfo-maria";
-    $dbName="DBdelahaye";
-    $username = "delahaye";
-    $password = "delahaye";
-
-    $dsn="mysql:dbname=$dbName;host=$serverName";
-    try {
-      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
-      return $connexion;
-    } catch(PDOException $e) {
-      echo "Connection failed: ".$e->getMessage().PHP_EOL;
-    }
-}
-
-function getRestaurants($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, E.numDepartement AS dep FROM RESTAURANT R JOIN EMPLACEMENT E ON R.commune = E.commune";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
-
-function getRestaurantsByName($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, E.numDepartement AS dep FROM RESTAURANT R JOIN EMPLACEMENT E ON R.commune = E.commune ORDER BY nomResto ASC";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
-
-function getRestaurantsByNote($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, E.numDepartement AS dep FROM RESTAURANT R JOIN EMPLACEMENT E ON R.commune = E.commune ORDER BY nbEtoiles DESC";
-    $stmt = $connexion->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
-}
+require_once("../bd/Selects.php");
 
 $connexion= connexionBd();
 
