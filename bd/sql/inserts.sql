@@ -40,19 +40,11 @@ insert into UTILISATEUR (pseudo, motDePasse, moderateur) values
 ('AdminJoe', 'passJoe', true),
 ('EveGourmande', 'passEve', false);
 
-insert into DATEAVIS (dateAvis) values
-    ("2024-02-28"),
-    ("2024-08-31"),
-    ("2024-11-11"),
-    ("2024-12-25"),
-    ("2025-01-29"),
-    ("2025-03-08");
-
 insert into DONNER values
-    (1, 1, 1, "Avis 1", 0),
-    (2, 1, 1, "Coucou c moi", 0),
-    (3, 3, 3, "Je suis un avis très utile", 2),
-    (4, 5, 4, "Le serveur était pas sympa", 3),
-    (4, 3, 5, "C mon premier avis", 2),
-    (3, 1, 2, "Je suis très gentil", 1),
-    (2, 2, 1, "C le dernier insert des avis", 5);
+    (1, "2024-02-28", 1, "Avis 1", 0),
+    (2, "2024-02-28", 1, "Coucou c moi", 0),
+    (3, "2024-11-11", 3, "Je suis un avis très utile", 2),
+    (4, "2025-01-29", 4, "Le serveur était pas sympa", 3),
+    (4, "2024-11-11", 5, "C mon premier avis", 2),
+    (3, "2024-02-28", 2, "Je suis très gentil", 1),
+    (2, "2024-08-31", 1, "C le dernier insert des avis", 5);

@@ -46,11 +46,6 @@ create table UTILISATEUR(
     passwordUtil varchar(100)
 );
 
-create table DATEAVIS(
-    idDate int primary key auto_increment,
-    dateAvis date
-);
-
 create or replace table UTILISATEUR (
     idUtilisateur int primary key auto_increment,
     pseudo varchar(24),
@@ -60,11 +55,11 @@ create or replace table UTILISATEUR (
 
 create table DONNER(
     idUtilisateur int,
-    idDate int,
+    dateAvis date,
     idRestaurant int,
     avis varchar(100),
     note int,
-    primary key(idUtilisateur, idDate, idRestaurant)
+    primary key(idUtilisateur, dateAvis, idRestaurant)
 );
 
 alter table RESTAURANT add foreign key (idType) references TYPERESTAURANT (idType);
@@ -72,5 +67,4 @@ alter table RESTAURANT add foreign key (commune) references EMPLACEMENT (commune
 alter table APPARTENIR add foreign key (idRestaurant) references RESTAURANT (idRestaurant);
 alter table APPARTENIR add foreign key (idCuisine) references CUISINE (idCuisine);
 alter table DONNER add foreign key (idUtilisateur) references UTILISATEUR (idUtilisateur);
-alter table DONNER add foreign key (idDate) references DATEAVIS (idDate);
 alter table DONNER add foreign key (idRestaurant) references RESTAURANT (idRestaurant);
