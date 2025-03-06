@@ -29,11 +29,6 @@ class RestaurantImplDao
         $restaurant = $selectRestaurant->fetchAll();
         $cuisines = $selectCuisines->fetchAll();
 
-        $cuisine = new Cuisine(0);
-        foreach ($cuisines as $c){
-            $idTypeCuisine = $c["idType"];
-            $cuisine->addType($c["typeCuisine"]);
-        }
         $idTypeRestaurant = $restaurant[0]["idType"];
         $typeRestaurant = $restaurant[0]["typeRestaurant"];
 
