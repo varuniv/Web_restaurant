@@ -344,6 +344,27 @@ class RestaurantImplDao
         return $restaurants;
     }
 
+    public function getNomCuisine($idR): array {
+        $db = Connexion::connect();
+        $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = ?";
+        $selectNomCuisine = $db->prepare($sql);
+        $selectNomCuisine->execute(array($idR));
+        return $selectNomCuisine->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getMinUnusedRestId(): int {
+        $db = Connexion::connect();
+        // Cette fonction va permettre d'avoir le plus petit ID possible d'utiliser
+        // C.A.D. s'il y a l'id 0 et 2 elle va renvoyer 1.
+        $selectID = $db->prepare("SELECT min(idRestaurant) as idRestaurant FROM RESTAURANT 
+                   WHERE idRestaurant+1 NOT IN (SELECT idRestaurant FROM RESTAURANT) 
+                   AND EXISTS (SELECT 1 FROM RESTAURANT where idRestaurant = 0)");
+        $selectID->execute(array());
+        $result = $selectID->fetch();
+        $id = ($result["idRestaurant"] != null) ? $result["idRestaurant"] : 0;
+        return $id;
+    }
+
     // Insert
     public function insertRestaurant(Restaurant $restaurant): void{
         // Le restaurant doit avoir un type restaurant, une cuisine et un emplacement qui existe dans la base de données
@@ -446,7 +467,8 @@ class RestaurantImplDao
     }
 
     // Delete
-    public function deleteRestaurant(int $id): void{
+    public function deleteRestaurant(int $id): void
+    {
         $db = Connexion::connect();
         $deleteDonner = $db->prepare('DELETE FROM DONNER WHERE idRestaurant = ?');
         $deleteDonner->execute(array($id));
@@ -454,27 +476,6 @@ class RestaurantImplDao
         $deleteAppartenir->execute(array($id));
         $deleteResto = $db->prepare('DELETE FROM RESTAURANT WHERE idRestaurant = ?');
         $deleteResto->execute(array($id));
-    }
-
-    public function getNomCuisine($idR): array {
-        $db = Connexion::connect();
-        $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = ?";
-        $selectNomCuisine = $db->prepare($sql);
-        $selectNomCuisine->execute(array($idR));
-        return $selectNomCuisine->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    private function getMinUnusedRestId(): int {
-        $db = Connexion::connect();
-        // Cette fonction va permettre d'avoir le plus petit ID possible d'utiliser
-        // C.A.D. s'il y a l'id 0 et 2 elle va renvoyer 1.
-        $selectID = $db->prepare("SELECT min(idRestaurant) as idRestaurant FROM RESTAURANT 
-                   WHERE idRestaurant+1 NOT IN (SELECT idRestaurant FROM RESTAURANT) 
-                   AND EXISTS (SELECT 1 FROM RESTAURANT where idRestaurant = 0)");
-        $selectID->execute(array());
-        $result = $selectID->fetch();
-        $id = ($result["idRestaurant"] != null) ? $result["idRestaurant"] : 0;
-        return $id;
     }
 }
 
