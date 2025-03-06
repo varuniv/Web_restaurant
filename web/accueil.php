@@ -17,24 +17,22 @@ function connexionBd(){
     }
 }
 
-
 function getRestaurants($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM RESTAURANT R";
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, E.numDepartement AS dep FROM RESTAURANT R JOIN EMPLACEMENT E ON R.commune = E.commune";
     $stmt = $connexion->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
 
-
 function getRestaurantsByName($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM RESTAURANT R ORDER BY nomResto ASC";
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, E.numDepartement AS dep FROM RESTAURANT R JOIN EMPLACEMENT E ON R.commune = E.commune ORDER BY nomResto ASC";
     $stmt = $connexion->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
 }
 
 function getRestaurantsByNote($connexion) {
-    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, R.numDepartement AS dep FROM RESTAURANT R ORDER BY nbEtoiles DESC";
+    $sql = "SELECT R.idRestaurant AS idResto, R.nomRestaurant AS nomResto, R.commune AS ville, E.numDepartement AS dep FROM RESTAURANT R JOIN EMPLACEMENT E ON R.commune = E.commune ORDER BY nbEtoiles DESC";
     $stmt = $connexion->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();

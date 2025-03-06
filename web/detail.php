@@ -32,18 +32,35 @@ function getRestaurant($connexion, $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function getNomCuisine($connexion, $idC) {
-    $sql = "SELECT typeCuisine FROM CUISINE WHERE idCuisine = :idC ";
+function getEmplacement($connexion, $commune){
+    $sql = "SELECT * FROM EMPLACEMENT WHERE commune = :commune";
     $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':idC', $idC, PDO::PARAM_INT);
+    $stmt->bindParam(':commune', $commune, PDO::PARAM_STR);
     $stmt->execute();
-    return $stmt->fetch();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+function getNomCuisine($connexion, $idR) {
+    $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = :idR";
+    $stmt = $connexion->prepare($sql);
+    $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAvisRestaurant($connexion, $idR) {
+    $sql = "SELECT U.pseudo, D.dateAvis, D.avis, D.note FROM DONNER D JOIN UTILISATEUR U ON D.idUtilisateur = U.idUtilisateur WHERE D.idRestaurant = :idR ORDER BY D.dateAvis DESC";
+    $stmt = $connexion->prepare($sql);
+    $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 $connexion= connexionBd();
 $leRestaurant = getRestaurant($connexion, $idResto);
-$typeCuisine = getNomCuisine($connexion, $leRestaurant['idCuisine']);
+$typeCuisine = getNomCuisine($connexion, $idResto);
+$emplacement = getEmplacement($connexion, $leRestaurant['commune']);
+$lesAvis = getAvisRestaurant($connexion, $idResto);
 ?>
     <div class="container container_background">
         <div class="description_div">
@@ -54,17 +71,21 @@ $typeCuisine = getNomCuisine($connexion, $leRestaurant['idCuisine']);
                 <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
             </div>
             <h2><?php echo htmlspecialchars($leRestaurant['nomRestaurant']); ?></h2>
-            <p class="adresse_p"><?php echo htmlspecialchars($leRestaurant['numDepartement']) . " ". htmlspecialchars($leRestaurant['departement']) . ", ". htmlspecialchars($leRestaurant['commune']); ?></p>
+            <p class="adresse_p"><?php echo htmlspecialchars($emplacement['numDepartement']) . " ". htmlspecialchars($emplacement['departement']) . ", ". htmlspecialchars($leRestaurant['commune']); ?></p>
             <div class="categorie_div">
                 <?php if (!empty($leRestaurant['typeRestaurant'])) : ?>
                     <p><?php echo htmlspecialchars($leRestaurant['typeRestaurant']); ?></p>
-                    <?php if (!empty($typeCuisine['typeCuisine'])) : ?>
-                        <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
-                        <p><?php echo htmlspecialchars($typeCuisine['typeCuisine']); ?></p>
+                    <?php if (!empty($typeCuisine)) : ?>
+                        <?php foreach ($typeCuisine as $cuisine) : ?>
+                            <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                            <p><?php echo htmlspecialchars($cuisine['typeCuisine']); ?></p>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 <?php else : ?>
                     <?php if (!empty($typeCuisine['typeCuisine'])) : ?>
-                        <p><?php echo htmlspecialchars($typeCuisine['typeCuisine']); ?></p>
+                        <?php foreach ($typeCuisine as $cuisine) : ?>
+                            <p><?php echo htmlspecialchars($cuisine['typeCuisine']); ?></p>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($leRestaurant['vegetarien']) : ?>
@@ -122,22 +143,29 @@ $typeCuisine = getNomCuisine($connexion, $leRestaurant['idCuisine']);
     </div>
     <div class="container">
         <h3>Avis :</h3>
+        <hr />
         <ul>
-            <li>
-                <hr />
-                <div class="profil_utilisateur">
-                    <img src="../img/icon_profil.png" alt="Icon de profil">
-                    <h4>Michel Boulanger</h4>
-                </div>
-                <div class="note_utilisateur">
-                    <p>Notes :</p>
-                    <p>1/5</p>
-                </div>
-                <div class="avis_utilisateur">
-                    <p>On a eu froid du début à la fin du repas un problème de joint mal isolé sur la porte d’entrée selon la serveuse bref pas une bonne expérience et malgré une réduction de 30 % grâce a la fourchette le prix moyen par personne reste à 35 euros ! La prochaine fois j’irai prendre entrée plat dessert dans une brasserie bocuse à ce prix là Très déçue je ne reviendrai pas</p>
-                </div>
-                <hr />
-            </li>
+            <?php if (!empty($lesAvis)) : ?>
+                <?php foreach ($lesAvis as $avis) : ?>
+                    <li>
+                        <div class="profil_utilisateur">
+                            <img src="../img/icon_profil.png" alt="Icon de profil">
+                            <h4><?php echo htmlspecialchars($avis['pseudo'])?></h4>
+                        </div>
+                        <div class="note_utilisateur">
+                            <p>Notes :</p>
+                            <p><?php echo htmlspecialchars($avis['note'])?>/5</p>
+                            <div class="date_avis">
+                                <p><?php echo htmlspecialchars($avis['dateAvis'])?></p>
+                            </div>
+                        </div>
+                        <div class="avis_utilisateur">
+                            <p><?php echo htmlspecialchars($avis['avis']); ?></p></p>
+                        </div>
+                        <hr />
+                    </li>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </ul>
     </div>
 <?php
