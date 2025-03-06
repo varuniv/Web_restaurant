@@ -362,8 +362,41 @@ class RestaurantImplDao
     }
 
     // Update
-    public function updateRestaurant(int $id, Restaurant $restaurant){
-        // Faire requete
+    public function updateRestaurant(int $id, Restaurant $newRestaurant){
+        $db = Connexion::connect();
+        $update = $db->prepare('UPDATE RESTAURANT SET 
+                      nomRestaurant = ?,
+                      idType = ?,
+                      horaires = ?,
+                      siret = ?,
+                      numTel = ?,
+                      urlWeb = ?,
+                      numDepartement = ?,
+                      vegetarien = ?,
+                      vegan = ?,
+                      entreeFauteuilRoulant = ?,
+                      accesInternet = ?,
+                      marqueRestaurant = ?,
+                      nbEtoiles = ?,
+                      urlFacebook = ?
+                      WHERE idRestaurant = ?');
+        $update->execute(array(
+            $newRestaurant->getNom(),
+            $newRestaurant->getTypeRestaurant()->getId(),
+            $newRestaurant->getHoraires(),
+            $newRestaurant->getSiret(),
+            $newRestaurant->getNumTel(),
+            $newRestaurant->getUrlWeb(),
+            $newRestaurant->getEmplacement()->getNumDepartement(),
+            $newRestaurant->isVegetarien(),
+            $newRestaurant->isVegan(),
+            $newRestaurant->getEntreeFauteuilRoulant(),
+            $newRestaurant->hasAccesInternet(),
+            $newRestaurant->getMarqueRestaurant(),
+            $newRestaurant->getNbEtoiles(),
+            $newRestaurant->getUrlFacebook(),
+            $id
+        ));
     }
 
     // Delete
