@@ -10,9 +10,9 @@ create table TYPERESTAURANT(
 );
 
 create table EMPLACEMENT(
-    numDepartement int primary key,
-    departement varchar(42),
-    commune varchar(42)
+    commune varchar(42) primary key,
+    numDepartement int,
+    departement varchar(42)
 );
 
 create table RESTAURANT(
@@ -23,7 +23,7 @@ create table RESTAURANT(
     siret varchar(25) unique,
     numTel varchar(10) unique,
     urlWeb varchar(100),
-    numDepartement int,
+    commune varchar(42),
     vegetarien boolean,
     vegan boolean,
     entreeFauteuilRoulant boolean,
@@ -68,7 +68,7 @@ create table DONNER(
 );
 
 alter table RESTAURANT add foreign key (idType) references TYPERESTAURANT (idType);
-alter table RESTAURANT add foreign key (numDepartement) references EMPLACEMENT (numDepartement);
+alter table RESTAURANT add foreign key (commune) references EMPLACEMENT (commune);
 alter table APPARTENIR add foreign key (idRestaurant) references RESTAURANT (idRestaurant);
 alter table APPARTENIR add foreign key (idCuisine) references CUISINE (idCuisine);
 alter table DONNER add foreign key (idUtilisateur) references UTILISATEUR (idUtilisateur);
