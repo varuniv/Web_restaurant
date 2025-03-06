@@ -394,6 +394,12 @@ class RestaurantImplDao
         }
     }
 
+    public function addCuisine(Cuisine $cuisine): void{
+        $db = Connexion::connect();
+        $insertCuisine = $db->prepare("INSERT INTO CUISINE(typeCuisine) values (?)");
+        $insertCuisine->execute(array($cuisine->getTypeCuisine()));
+    }
+
     // Update
     public function updateRestaurant(int $id, Restaurant $newRestaurant){
         $db = Connexion::connect();
