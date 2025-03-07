@@ -1,6 +1,6 @@
 <?php
 
-namespace bd\php\classes;
+namespace modele\classes\classes;
 class Emplacement{
     private String $departement;
     private String $commune;

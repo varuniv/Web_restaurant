@@ -1,6 +1,6 @@
 <?php
 
-namespace bd\php\classes;
+namespace modele\classes\classes;
 class Avis{
     private String $avis;
     private String $date;

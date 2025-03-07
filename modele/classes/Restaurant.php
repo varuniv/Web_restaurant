@@ -1,9 +1,9 @@
 <?php
 
-namespace bd\php\classes;
-use bd\php\classes\TypeRestaurant;
-use bd\php\classes\Cuisine;
-use bd\php\classes\Emplacement;
+namespace modele\classes\classes;
+use modele\classes\classes\TypeRestaurant;
+use modele\classes\classes\Cuisine;
+use modele\classes\classes\Emplacement;
 
 class Restaurant{
     private String $nomRestaurant;
@@ -92,7 +92,7 @@ class Restaurant{
     }
 
     public function getEmplacement():Emplacement{
-        return $this->empacement;
+        return $this->emplacement;
     }
 
     public function getCuisines():array{
@@ -100,7 +100,7 @@ class Restaurant{
     }
 
     public function setNom(String $nom):void{
-        $this->nom=$nom;
+        $this->nomRestaurant=$nom;
     }
 
     public function setHoraires(String $horaires):void{
@@ -116,7 +116,7 @@ class Restaurant{
     }
 
     public function setUrlWeb(String $urlWeb):void{
-        $this->urlWen=$urlWeb;
+        $this->urlWeb=$urlWeb;
     }
 
     public function setVegetarien(bool $vegetarien):void{
@@ -164,7 +164,7 @@ class Restaurant{
     }
 
     public function __toString():String{
-        return $this->nom." ".$this->typeRestaurant->__toString()." ".$this->cuisine->__toString()." Il ouvre à $this->horaires Num Siret: $this->siret Tel: $this->numTel".$this->emplacement->__toString();
+        return $this->nomRestaurant." ".$this->typeRestaurant->__toString()." Il ouvre à $this->horaires Num Siret: $this->siret Tel: $this->numTel".$this->emplacement->__toString();
     }
 }
 ?>
