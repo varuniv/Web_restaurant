@@ -50,7 +50,7 @@ function getEmplacement($connexion, $commune){
 
 // Récupère le nom du (des) type(s) de cuisine du restaurant à partir de l'id du restaurant
 function getNomCuisine($connexion, $idR) {
-    $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = :idR";
+    $sql = "SELECT C.typeCuisine FROM CUISINE C JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = :idR";
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
     $stmt->execute();
@@ -107,7 +107,7 @@ function getRestaurantsByNote($connexion) {
 
 // Récupère les avis de l'utilisateurs à partir de l'id de l'utilisateur
 function getAvisUtilisateur($connexion, $idU) {
-    $sql = "SELECT D.dateAvis, D.avis, D.note, R.nomRestaurant FROM DONNER D JOIN RESTAURANT R ON D.idRestaurant = R.idRestaurant WHERE D.idUtilisateur = :idU ORDER BY D.dateAvis DESC";
+    $sql = "SELECT D.dateAvis, D.avis, D.note, R.idRestaurant, R.nomRestaurant FROM DONNER D JOIN RESTAURANT R ON D.idRestaurant = R.idRestaurant WHERE D.idUtilisateur = :idU ORDER BY D.dateAvis DESC";
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':idU', $idU, PDO::PARAM_INT);
     $stmt->execute();
