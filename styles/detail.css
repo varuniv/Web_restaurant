@@ -55,8 +55,21 @@ h2{
     margin-left: 5px;
 }
 
-.histoire_div{
-    text-align: justify;
+.flex_row_div{
+    display: flex;
+}
+
+.description_p{
+    margin-right: 5px;
+}
+
+.moitie_div{
+    width: 50%;
+}
+
+.marque_div{
+    text-align: end;
+    font-style: italic;
 }
 
 h3{
@@ -91,8 +104,44 @@ ul{
     margin-left: 4rem;
 }
 
+.date_avis{
+    width: 70%;
+}
+
 .avis_utilisateur{
     text-align: justify;
     padding: 1rem;
     border: solid black;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.donnerAvis_lab{
+    font-size: 1.5rem;
+    text-align: left;
+    margin-left: 4rem;
+    margin-bottom: 1rem;
+}
+
+.avis_input{
+    margin-bottom: 2rem;
+}
+
+.donnerNote_lab{
+    font-size: 1.5rem;
+    margin-right: 20rem;
+}
+
+.note_Rbtn{
+    margin-bottom: 2rem;
+}
+
+.btn_publier{
+    background-color: #065b16;
+    border-color: black;
+    color: white;
 }

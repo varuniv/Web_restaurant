@@ -1,6 +1,31 @@
 <?php
 $cssFile = "../styles/login.css";
 include 'header.php';
+require_once("../bd/Selects.php");
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    $pseudo = $_POST["pseudo"];
+    $password = $_POST["password"];
+    $connexion = connexionBd();
+    if ($connexion){
+        $utilisateur = getUtilisateurByPseudo($pseudo, $connexion);
+        if ($utilisateur){
+            $pswd = $utilisateur["motDePasse"];
+            if ($password == $pswd){
+                $_SESSION["idUtilisateur"] = $utilisateur["idUtilisateur"];
+                $_SESSION["pseudo"] = $pseudo;
+                $_SESSION["moderateur"] = $utilisateur["moderateur"];
+                header("Location: accueil.php");
+            }
+            else {
+                echo "Mot de passe incorrect.";
+            }
+        }
+        else {
+            echo "Aucun utilisateur trouvé avec ce pseudo.";
+        }
+    }
+}
 ?>
 
     <div class="login_div">
@@ -8,8 +33,8 @@ include 'header.php';
         <div class="aside">
             <img src="../img/logo_site.png" alt="IUT">
             <form action="login.php" method="POST">
-                <label class="loginLab">Email</label>
-                <input class="loginInputs" type="text" name="email" required>
+                <label class="loginLab">pseudo</label>
+                <input class="loginInputs" type="text" name="pseudo" required>
                 <label class="loginLab">Mot de passe</label>
                 <input class="loginInputs" type="password" name="password" required>
                 <div class="submit-btn">
