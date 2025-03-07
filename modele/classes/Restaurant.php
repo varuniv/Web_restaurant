@@ -6,6 +6,7 @@ use modele\classes\classes\Cuisine;
 use modele\classes\classes\Emplacement;
 
 class Restaurant{
+    private int $idRestaurant;
     private String $nomRestaurant;
     private String $horaires;
     private String $siret;
@@ -22,7 +23,8 @@ class Restaurant{
     private array $cuisines;
     private Emplacement $emplacement;
 
-    public function __construct(String $nomRestaurant, String $horaires, String $siret, String $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant){
+    public function __construct(int $idRestaurant=null, String $nomRestaurant, String $horaires, String $siret, String $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant){
+        $this->idRestaurant = $idRestaurant;
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
         $this->siret=$siret;
@@ -37,6 +39,10 @@ class Restaurant{
         $this->urlFacebook=$urlFacebook;
         $this->typeRestaurant=$typeRestaurant;
         $this->cuisines=[];
+    }
+
+    public function getId():int {
+        return $this->idRestaurant;
     }
 
     public function getNom():String{
@@ -97,6 +103,10 @@ class Restaurant{
 
     public function getCuisines():array{
         return $this->cuisines;
+    }
+
+    public function setId(int $idRestaurant):void{
+        $this->idRestaurant = $idRestaurant;
     }
 
     public function setNom(String $nom):void{
