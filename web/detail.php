@@ -17,13 +17,23 @@ $typeCuisine = getNomCuisine($connexion, $idResto);
 $emplacement = getEmplacement($connexion, $leRestaurant['commune']);
 $lesAvis = getAvisRestaurant($connexion, $idResto);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (isset($_POST['publier'])) {
     $avis = $_POST["avis"];
     $note = (int)$_POST["note"];
     $date = date('Y-m-d');
     publierAvis($connexion, $idUtilisateur, $date, $idResto, $avis, $note);
     $lesAvis = getAvisRestaurant($connexion, $idResto);
 }
+
+if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) && isset($_POST['cancel_idRestaurant'])) {
+    $idUtilisateur = $_POST['cancel_idUtilisateur'];
+    $dateAvis = $_POST['cancel_dateAvis'];
+    $idRestaurant = $_POST['cancel_idRestaurant'];
+    supprimerAvis($connexion, $idUtilisateur, $dateAvis, $idRestaurant);
+    $lesAvis = getAvisRestaurant($connexion, $idResto);
+}
+
+
 ?>
     <div class="container container_background">
         <div class="description_div">
@@ -121,6 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="date_avis">
                                 <p><?php echo htmlspecialchars($avis['dateAvis'])?></p>
                             </div>
+                            <?php if ($_SESSION["moderateur"]==1) : ?>
+                                <form method="POST" onsubmit="return confirmCancel()">
+                                    <input type="hidden" name="cancel_idUtilisateur" value="<?php echo htmlspecialchars($avis['idUtilisateur']); ?>">
+                                    <input type="hidden" name="cancel_dateAvis" value="<?php echo htmlspecialchars($avis['dateAvis']); ?>">
+                                    <input type="hidden" name="cancel_idRestaurant" value="<?php echo htmlspecialchars($idResto); ?>">
+                                    <button type="submit" name="cancel" class="btn border-1 border-dark btn-base">Supprimer le commentaire</button>
+                                </form>
+                            <?php endif; ?>
                         </div>
                         <div class="avis_utilisateur">
                             <p><?php echo htmlspecialchars($avis['avis']); ?></p></p>

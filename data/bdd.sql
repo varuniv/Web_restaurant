@@ -121,3 +121,10 @@ insert into DONNER values
     (4, "2024-11-11", 5, "C mon premier avis", 2),
     (3, "2024-02-28", 2, "Je suis très gentil", 1),
     (2, "2024-08-31", 1, "C le dernier insert des avis", 5);
+
+insert into APPARTENIR values
+    (1, 1),
+    (2, 1),
+    (3, 2),
+    (4, 1),
+    (5, 2);

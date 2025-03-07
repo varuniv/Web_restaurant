@@ -50,7 +50,7 @@ function getEmplacement($connexion, $commune){
 
 // Récupère le nom du (des) type(s) de cuisine du restaurant à partir de l'id du restaurant
 function getNomCuisine($connexion, $idR) {
-    $sql = "SELECT C.typeCuisine FROM CUISINE C INNER JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = :idR";
+    $sql = "SELECT C.typeCuisine FROM CUISINE C JOIN APPARTENIR A ON C.idCuisine = A.idCuisine WHERE A.idRestaurant = :idR";
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
     $stmt->execute();
@@ -59,12 +59,23 @@ function getNomCuisine($connexion, $idR) {
 
 // Récupère les avis sur un restaurant à partir de l'id du restaurant
 function getAvisRestaurant($connexion, $idR) {
-    $sql = "SELECT U.pseudo, D.dateAvis, D.avis, D.note FROM DONNER D JOIN UTILISATEUR U ON D.idUtilisateur = U.idUtilisateur WHERE D.idRestaurant = :idR ORDER BY D.dateAvis DESC";
+    $sql = "SELECT U.pseudo, U.idUtilisateur, D.dateAvis, D.avis, D.note FROM DONNER D JOIN UTILISATEUR U ON D.idUtilisateur = U.idUtilisateur WHERE D.idRestaurant = :idR ORDER BY D.dateAvis DESC";
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':idR', $idR, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// Supprime l'avis d'un utilisateur sur un restaurant à partir de l'id du restaurant, l'id de l'utilisateur et la date de l'avis
+function supprimerAvis($connexion, $idUtilisateur, $dateAvis, $idRestaurant) {
+    $sql = "DELETE FROM DONNER WHERE idUtilisateur = :idUtilisateur AND dateAvis = :dateAvis AND idRestaurant = :idRestaurant";
+    $stmt = $connexion->prepare($sql);
+    $stmt->bindParam(':idUtilisateur', $idUtilisateur, PDO::PARAM_INT);
+    $stmt->bindParam(':dateAvis', $dateAvis, PDO::PARAM_STR);
+    $stmt->bindParam(':idRestaurant', $idRestaurant, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 
                                                 // PAGE PAGE D'ACCUEIL
 
@@ -96,7 +107,7 @@ function getRestaurantsByNote($connexion) {
 
 // Récupère les avis de l'utilisateurs à partir de l'id de l'utilisateur
 function getAvisUtilisateur($connexion, $idU) {
-    $sql = "SELECT D.dateAvis, D.avis, D.note, R.nomRestaurant FROM DONNER D JOIN RESTAURANT R ON D.idRestaurant = R.idRestaurant WHERE D.idUtilisateur = :idU ORDER BY D.dateAvis DESC";
+    $sql = "SELECT D.dateAvis, D.avis, D.note, R.idRestaurant, R.nomRestaurant FROM DONNER D JOIN RESTAURANT R ON D.idRestaurant = R.idRestaurant WHERE D.idUtilisateur = :idU ORDER BY D.dateAvis DESC";
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':idU', $idU, PDO::PARAM_INT);
     $stmt->execute();

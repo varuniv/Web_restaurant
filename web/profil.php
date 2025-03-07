@@ -7,6 +7,14 @@ $idUtilisateur = $_SESSION["idUtilisateur"];
 $connexion= connexionBd();
 $avisUtilisateur = getAvisUtilisateur($connexion, $idUtilisateur);
 
+if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) && isset($_POST['cancel_idRestaurant'])) {
+    $idUtilisateur = $_POST['cancel_idUtilisateur'];
+    $dateAvis = $_POST['cancel_dateAvis'];
+    $idRestaurant = $_POST['cancel_idRestaurant'];
+    supprimerAvis($connexion, $idUtilisateur, $dateAvis, $idRestaurant);
+    $avisUtilisateur = getAvisUtilisateur($connexion, $idUtilisateur);
+}
+
 ?>
 
     <div class="container">
@@ -27,6 +35,12 @@ $avisUtilisateur = getAvisUtilisateur($connexion, $idUtilisateur);
                             <div class="date_avis">
                                 <p><?php echo htmlspecialchars($avis['dateAvis'])?></p>
                             </div>
+                            <form method="POST" onsubmit="return confirmCancel()">
+                                <input type="hidden" name="cancel_idUtilisateur" value="<?php echo htmlspecialchars($idUtilisateur); ?>">
+                                <input type="hidden" name="cancel_dateAvis" value="<?php echo htmlspecialchars($avis['dateAvis']); ?>">
+                                <input type="hidden" name="cancel_idRestaurant" value="<?php echo htmlspecialchars($avis['idRestaurant']); ?>">
+                                <button type="submit" name="cancel" class="btn border-1 border-dark btn-base">Supprimer le commentaire</button>
+                            </form>
                         </div>
                         <div class="avis_utilisateur">
                             <p><?php echo htmlspecialchars($avis['avis']); ?></p></p>
