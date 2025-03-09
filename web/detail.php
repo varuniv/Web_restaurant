@@ -137,7 +137,7 @@ if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) &&
                             <?php endif; ?>
                         </div>
                         <div class="avis_utilisateur">
-                            <p><?php echo htmlspecialchars($avis['avis']); ?></p></p>
+                            <p><?php echo htmlspecialchars($avis['avis']); ?></p>
                         </div>
                         <hr />
                     </li>

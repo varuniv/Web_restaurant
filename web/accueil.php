@@ -9,6 +9,9 @@ require_once __DIR__ . "/../bd/php/Connexion.php";
 require_once __DIR__ . "/../bd/php/classes/RestaurantImplDao.php";
 
 $connexion= Connexion::connect();
+if (isset($_SESSION["moderateur"])){
+    $moderateur = $_SESSION["moderateur"];
+}
 
 $dao = new RestaurantImplDao();
 
@@ -74,6 +77,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <div>
         <div id="restaurantsList" class="container liste_restaurant">
 
+        <?php if (isset($_SESSION['moderateur']) && $_SESSION['moderateur'] == 1):?>
+            <div class="restaurant_div">
+                <div class="img_restaurant_div">
+                    <img src="/img/plus_ajout.png" class="img_card" alt="Image du Restaurant">
+                </div>
+                <div>
+                    <a href="/web/ajout_restaurant.php">Ajouter un restaurant</a>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <?php foreach ($lesRestaurants as $leRestaurant) : ?>
             <div class="restaurant_div">
                 <div class="img_restaurant_div">
@@ -86,7 +100,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 </div>
             </div>
         <?php endforeach; ?>
-
         </div>
         </div>
     </div>

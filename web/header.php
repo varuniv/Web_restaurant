@@ -4,6 +4,8 @@ session_start();
 
 if (isset($_GET['deconnexion'])) {
     $_SESSION['idUtilisateur'] = '';
+    $_SESSION["pseudo"] = '';
+    $_SESSION['moderateur'] = 0;
     header("Location: /web/login.php");
 }
 ?>
