@@ -1,6 +1,7 @@
 <?php
 
-namespace modele\classes\classes;
+namespace modele\classes;
+
 class TypeRestaurant{
     private int $idType;
     private String $type;

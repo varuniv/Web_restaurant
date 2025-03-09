@@ -1,6 +1,7 @@
 <?php
 
-namespace modele\classes\classes;
+namespace modele\classes;
+
 class Emplacement{
     private String $departement;
     private String $commune;

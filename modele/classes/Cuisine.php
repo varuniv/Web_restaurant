@@ -1,6 +1,6 @@
 <?php
 
-namespace modele\classes\classes;
+namespace modele\classes;
 class Cuisine{
     private int $idCuisine;
     private String $typeCuisine;

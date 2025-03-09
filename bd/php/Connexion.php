@@ -1,5 +1,5 @@
 <?php
-namespace bd;
+namespace bd\php;
 use PDO;
 use PDOException;
 class Connexion{

@@ -1,6 +1,7 @@
 <?php
 
-namespace modele\classes\classes;
+namespace modele\classes;
+
 class Utilisateur{
     private int $idUtilisateur;
     private String $pseudo;
@@ -45,7 +46,7 @@ class Utilisateur{
     }
 
     public function __toString():String{
-        return "Utilisateur numéro $this->idUtilisateur\nPseudo: $this->pseudo\nMot de passe:$this->password";
+        return "Utilisateur numéro $this->idUtilisateur\nPseudo: $this->pseudo\nMot de passe: $this->password";
     }
 }
 ?>

@@ -1,10 +1,10 @@
 <?php
 
 namespace data;
-use modele\classes\classes\Cuisine;
-use modele\classes\classes\Emplacement;
-use modele\classes\classes\Restaurant;
-use modele\classes\classes\TypeRestaurant;
+use modele\classes\Cuisine;
+use modele\classes\Emplacement;
+use modele\classes\Restaurant;
+use modele\classes\TypeRestaurant;
 
 require_once __DIR__ . '/../modele/classes/Emplacement.php';
 require_once __DIR__ . '/../modele/classes/TypeRestaurant.php';
