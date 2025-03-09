@@ -438,6 +438,33 @@ class RestaurantImplDao
         return $restaurants;
     }
 
+    public function getTypeRestaurant(): array
+    {
+        $db = Connexion::connect();
+        $selectTypeCuisines = $db->prepare('SELECT * FROM TYPERESTAURANT');
+        $selectTypeCuisines->execute();
+
+        $type = array();
+        foreach ($selectTypeCuisines->fetchAll() as $c) {
+            $type[] = new TypeRestaurant($c['idType'], $c['typeRestaurant']);
+        }
+
+        return $type;
+    }
+
+    public function getCuisines() {
+        $db = Connexion::connect();
+        $selectCuisines = $db->prepare('SELECT * FROM CUISINE');
+        $selectCuisines->execute();
+
+        $cuisines = array();
+        foreach ($selectCuisines->fetchAll() as $cuisine) {
+            $cuisines[] = new Cuisine($cuisine['idCuisine'], $cuisine['typeCuisine']);
+        }
+
+        return $cuisines;
+    }
+
     public function getNomCuisine($idR): array
     {
         $db = Connexion::connect();
