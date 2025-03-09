@@ -4,7 +4,7 @@ session_start();
 
 if (isset($_GET['deconnexion'])) {
     $_SESSION['idUtilisateur'] = '';
-    header("Location: login.php");
+    header("Location: /web/login.php");
 }
 ?>
 
@@ -19,7 +19,7 @@ if (isset($_GET['deconnexion'])) {
     if (isset($cssFile)) {
         echo '<link rel="stylesheet" href="'.$cssFile.'">';
     } else {
-        echo '<link rel="stylesheet" href="styles/accueil.css">';
+        echo '<link rel="stylesheet" href= "/styles/accueil.css">';
     }
     ?>
 </head>
@@ -27,14 +27,14 @@ if (isset($_GET['deconnexion'])) {
     <header style="position: sticky;top: 0;">
         <nav class="navbar d-flex justify-content-between " style="background-color: #065b16">
             <div class="mx-3">
-                <a href="accueil.php"><img src="../img/logo_site.png" alt="Accueil" style="max-height:50px"></a>
+                <a href="/web/accueil.php"><img src="/img/logo_site.png" alt="Accueil" style="max-height:50px"></a>
             </div>
             <div class="mx-3">
                 <?php if (isset($_SESSION["idUtilisateur"]) && !empty($_SESSION["idUtilisateur"])): ?>
-                    <a class="btn" style="background-color:#EFEFE1" href="profil.php">Mon profil</a>
+                    <a class="btn" style="background-color:#EFEFE1" href="/web/profil.php">Mon profil</a>
                     <a class="btn" style="background-color:#EFEFE1" href="?deconnexion=true">Déconnexion</a>
                 <?php else : ?>
-                    <a class="btn" style="background-color:#EFEFE1" href="login.php">Se connecter</a>
+                    <a class="btn" style="background-color:#EFEFE1" href="/web/login.php">Se connecter</a>
                 <?php endif; ?>
             </div>
         </nav>

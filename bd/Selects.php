@@ -1,23 +1,5 @@
 <?php
-
-// Connexion à la base de données
-function connexionBd(){
-    $serverName = "servinfo-maria";
-    $dbName="DBdelahaye";
-    $username = "delahaye";
-    $password = "delahaye";
-
-    $dsn="mysql:dbname=$dbName;host=$serverName";
-    try {
-      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
-      return $connexion;
-    } catch(PDOException $e) {
-      echo "Connection failed: ".$e->getMessage().PHP_EOL;
-    }
-}
-
                                                 // PAGE DETAIL DES RESTAURANTS
-
 // Publication de l'avis de L'utilisateur
 function publierAvis($connexion, $idUtilisateur, $dateAvis, $idResto, $avis, $note) {
     $sql = "INSERT INTO DONNER values (:idUtilisateur, :dateAvis, :idRestaurant, :avis, :note)";

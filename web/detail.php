@@ -1,7 +1,11 @@
 <?php
-$cssFile = "../styles/detail.css";
-include 'header.php';
-require_once("../bd/Selects.php");
+
+use bd\php\Connexion;
+
+$cssFile = "/styles/detail.css";
+include __DIR__ . '/header.php';
+require_once __DIR__ . "/../bd/php/Connexion.php";
+require_once __DIR__ . "/../bd/Selects.php";
 
 if (isset($_GET['idResto'])) {
     $idResto = $_GET['idResto'];
@@ -10,7 +14,7 @@ if (isset($_GET['idResto'])) {
     exit();
 }
 
-$connexion= connexionBd();
+$connexion= Connexion::connect();
 $idUtilisateur = $_SESSION["idUtilisateur"];
 $leRestaurant = getRestaurant($connexion, $idResto);
 $typeCuisine = getNomCuisine($connexion, $idResto);

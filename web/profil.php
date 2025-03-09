@@ -1,10 +1,14 @@
 <?php
-$cssFile = "../styles/profil.css";
-include 'header.php';
-require_once("../bd/Selects.php");
+use bd\php\Connexion;
+
+$cssFile = "styles/profil.css";
+require_once __DIR__ . "/../bd/php/Connexion.php";
+require_once __DIR__ . "/../bd/Selects.php";
+
+include __DIR__ . '/header.php';
 
 $idUtilisateur = $_SESSION["idUtilisateur"];
-$connexion= connexionBd();
+$connexion= Connexion::connect();
 $avisUtilisateur = getAvisUtilisateur($connexion, $idUtilisateur);
 
 if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) && isset($_POST['cancel_idRestaurant'])) {
@@ -52,5 +56,5 @@ if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) &&
         </ul>
     </div>
 <?php
-include 'footer.php';
+include __DIR__ . '/footer.php';
 ?>

@@ -1,9 +1,13 @@
 <?php
-$cssFile = "../styles/accueil.css";
-include 'header.php';
-require_once("../bd/Selects.php");
 
-$connexion= connexionBd();
+use bd\php\Connexion;
+
+$cssFile = "/styles/accueil.css";
+include __DIR__ . '/header.php';
+require_once __DIR__ . "/../bd/Selects.php";
+require_once __DIR__ . "/../bd/php/Connexion.php";
+
+$connexion= Connexion::connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST['order'] == 'nom'){
@@ -68,5 +72,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 <?php
-include 'footer.php';
+include __DIR__ . '/footer.php';
 ?>
