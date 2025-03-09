@@ -1,7 +1,7 @@
 <?php
 use bd\php\Connexion;
 
-$cssFile = "styles/profil.css";
+$cssFile = "/styles/profil.css";
 require_once __DIR__ . "/../bd/php/Connexion.php";
 require_once __DIR__ . "/../bd/Selects.php";
 

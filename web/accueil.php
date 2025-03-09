@@ -1,26 +1,42 @@
 <?php
 
 use bd\php\Connexion;
+use bd\php\classes\RestaurantImplDao;
 
 $cssFile = "/styles/accueil.css";
 include __DIR__ . '/header.php';
-require_once __DIR__ . "/../bd/Selects.php";
 require_once __DIR__ . "/../bd/php/Connexion.php";
+require_once __DIR__ . "/../bd/php/classes/RestaurantImplDao.php";
 
 $connexion= Connexion::connect();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if ($_POST['order'] == 'nom'){
-        $lesRestaurants = getRestaurantsByName($connexion);
+$dao = new RestaurantImplDao();
+
+$lesRestaurants = $dao->getRestaurants();
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if(!empty($_GET)){
+        if (!empty($_GET['order'])) {
+            if ($_GET['order'] == 'nom'){
+                $lesRestaurants = $dao->getRestaurantsOrderedByName();
+            }
+            else if ( $_GET['order'] == 'note') {
+                $lesRestaurants = $dao->getRestaurantsOrderedByNote();
+            }
+            else if ( $_GET['order'] == 'default') {
+                $lesRestaurants = $dao->getRestaurants();
+            }
+        }
+
+        else if (!empty($_GET['search'])) {
+            $lesRestaurants = $dao->getRestaurantsByNom($_GET['search']);
+        }
+
+        else {
+            header("Location: /web/accueil.php");
+            exit();
+        }
     }
-    if ( $_POST['order'] == 'note') {
-        $lesRestaurants = getRestaurantsByNote($connexion);
-    }
-    if ( $_POST['order'] == 'default') {
-        $lesRestaurants = getRestaurants($connexion);
-    }
-} else {
-    $lesRestaurants = getRestaurants($connexion);
 }
 ?>
         <div class="container">
@@ -37,12 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>     
         <div class="container">
-            <img src="../img/ornement_accueil.png" alt="Ornement de la page d'accueil">
+            <img src="/img/ornement_accueil.png" alt="Ornement de la page d'accueil">
             <h1>Nos restaurants</h1>
             <div class="recherche_div">
-                <input type="text" class="recherche_nom" placeholder="Rechercher un restaurant...">
+                <form method="GET" action="">
+                    <input type="text" name="search" class="recherche_nom" placeholder="Rechercher un restaurant...">
+                    <button type="submit">Rechercher</button>
+                </form>
                 <div>
-                    <form method="POST" action="">
+                    <form method="GET" action="">
                         <select class="tri_select" name="order">
                             <option value="default">Trier par défaut</option>
                             <option value="nom">Trier par nom</option>
@@ -53,17 +72,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         <div>
-        <div class="container liste_restaurant">
+        <div id="restaurantsList" class="container liste_restaurant">
 
         <?php foreach ($lesRestaurants as $leRestaurant) : ?>
             <div class="restaurant_div">
                 <div class="img_restaurant_div">
-                    <img src="../img/exemple_restaurant.jpg" class="img_card" alt="Image du Restaurant">
-                    <h3><?php echo htmlspecialchars($leRestaurant['nomResto']); ?></h3>
-                    <p><?php echo htmlspecialchars($leRestaurant['dep']). " ". htmlspecialchars($leRestaurant['ville']); ?></p>
+                    <img src="/img/exemple_restaurant.jpg" class="img_card" alt="Image du Restaurant">
+                    <h3><?php echo htmlspecialchars($leRestaurant->getNom()); ?></h3>
+                    <p><?php echo htmlspecialchars($leRestaurant->getEmplacement()->getNumDepartement()). " ". htmlspecialchars($leRestaurant->getEmplacement()->getCommune()); ?></p>
                 </div>
                 <div>
-                <a href="detail.php?idResto=<?php echo urlencode($leRestaurant['idResto']); ?>">Voir les informations</a>
+                <a href="/web/detail.php?idResto=<?php echo urlencode($leRestaurant->getId()); ?>">Voir les informations</a>
                 </div>
             </div>
         <?php endforeach; ?>

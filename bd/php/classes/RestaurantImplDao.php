@@ -147,6 +147,92 @@ class RestaurantImplDao
         return $restaurants;
     }
 
+    public function getRestaurantsOrderedByName(): array
+    {
+        $bd = Connexion::connect();
+        $sql = "SELECT * FROM RESTAURANT natural join EMPLACEMENT natural join TYPERESTAURANT ORDER BY nomRestaurant ASC";
+        $stmt = $bd->prepare($sql);
+        $stmt->execute();
+
+        $restaurantsData = $stmt->fetchAll();
+
+        $restaurants = [];
+
+        foreach ($restaurantsData as $data) {
+            // Création des objets Emplacement et TypeRestaurant (s'il y en a)
+            $emplacement = new Emplacement($data['numDepartement'], $data['commune'], $data['numDepartement']);
+            $typeRestaurant = new TypeRestaurant($data['idType'], $data['typeRestaurant']);
+
+            // Création de l'objet Restaurant
+            $restaurant = new Restaurant(
+                $data['idRestaurant'],
+                $data['nomRestaurant'],
+                $data['horaires'],
+                $data['siret'],
+                $data['numTel'],
+                $data['urlWeb'],
+                (bool) $data['vegetarien'],
+                (bool) $data['vegan'],
+                (bool) $data['entreeFauteuilRoulant'],
+                (bool) $data['accesInternet'],
+                $data['marqueRestaurant'],
+                (int) $data['nbEtoiles'],
+                $data['urlFacebook'],
+                $typeRestaurant,
+                $emplacement
+            );
+
+            $restaurants[] = $restaurant;
+        }
+
+        return $restaurants;
+    }
+
+    public function getRestaurantsOrderedByNote(): array
+    {
+        $bd = Connexion::connect();
+        // Requête pour récupérer tous les détails des restaurants par ordre décroissant de leur note (nbEtoiles)
+        $sql = "SELECT * FROM RESTAURANT natural join EMPLACEMENT natural join TYPERESTAURANT ORDER BY nbEtoiles DESC";
+        $stmt = $bd->prepare($sql);
+        $stmt->execute();
+
+        // Récupérer toutes les lignes comme objets
+        $restaurantsData = $stmt->fetchAll();
+
+        // Tableau pour stocker les objets Restaurant
+        $restaurants = [];
+
+        foreach ($restaurantsData as $data) {
+            // Création des objets Emplacement et TypeRestaurant (s'il y en a)
+            $emplacement = new Emplacement($data['numDepartement'], $data['commune'], $data['numDepartement']);
+            $typeRestaurant = new TypeRestaurant($data['idType'], $data['typeRestaurant']);
+
+            // Création de l'objet Restaurant
+            $restaurant = new Restaurant(
+                $data['idRestaurant'],
+                $data['nomRestaurant'],
+                $data['horaires'],
+                $data['siret'],
+                $data['numTel'],
+                $data['urlWeb'],
+                (bool) $data['vegetarien'],
+                (bool) $data['vegan'],
+                (bool) $data['entreeFauteuilRoulant'],
+                (bool) $data['accesInternet'],
+                $data['marqueRestaurant'],
+                (int) $data['nbEtoiles'],
+                $data['urlFacebook'],
+                $typeRestaurant,
+                $emplacement
+            );
+
+            // Ajout de l'objet Restaurant dans le tableau
+            $restaurants[] = $restaurant;
+        }
+
+        return $restaurants;
+    }
+
     public function getRestaurantsByType(string $typeRestaurant): array
     {
         $db = Connexion::connect();
@@ -511,6 +597,6 @@ $emplacement = new Emplacement("", "Paris", 0);
 $typeRestaurant = new TypeRestaurant(2, "test");
 $resto = new Restaurant(0, "test insert", "08:00-22:00", "12", "0000000000", "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement);
 $dao = new RestaurantImplDao();
-$dao->deleteCuisine(3);
+//print_r($dao->getRestaurantsByNom("Le Petit"));
 //$restaurants = $dao->getRestaurantsByType("Fast Food");
 //print_r($restaurants);

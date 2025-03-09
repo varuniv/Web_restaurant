@@ -1,11 +1,13 @@
 <?php
 
 use bd\php\Connexion;
+use bd\php\classes\RestaurantImplDao;
 
 $cssFile = "/styles/detail.css";
 include __DIR__ . '/header.php';
 require_once __DIR__ . "/../bd/php/Connexion.php";
 require_once __DIR__ . "/../bd/Selects.php";
+require_once __DIR__ . "/../bd/php/classes/RestaurantImplDao.php";
 
 if (isset($_GET['idResto'])) {
     $idResto = $_GET['idResto'];
@@ -15,10 +17,11 @@ if (isset($_GET['idResto'])) {
 }
 
 $connexion= Connexion::connect();
+$dao = new RestaurantImplDao();
 $idUtilisateur = $_SESSION["idUtilisateur"];
-$leRestaurant = getRestaurant($connexion, $idResto);
-$typeCuisine = getNomCuisine($connexion, $idResto);
-$emplacement = getEmplacement($connexion, $leRestaurant['commune']);
+$leRestaurant = $dao->getRestaurant($idResto);
+$typeCuisine = $leRestaurant->getCuisines();
+$emplacement = $leRestaurant->getEmplacement();
 $lesAvis = getAvisRestaurant($connexion, $idResto);
 
 if (isset($_POST['publier'])) {
@@ -42,75 +45,64 @@ if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) &&
     <div class="container container_background">
         <div class="description_div">
             <div class="notes_div">
-                <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
-                <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
-                <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
-                <img class="icon_notes" src="../img/fourchette_dorée.jpg" alt="Note du restaurant">
+                <?php for ($i = 0; $i < $leRestaurant->getNbEtoiles(); $i++) {
+                    echo '<img class="icon_notes" src="/img/fourchette_dorée.jpg" alt="Note du restaurant">';
+                } ?>
             </div>
-            <h2><?php echo htmlspecialchars($leRestaurant['nomRestaurant']); ?></h2>
-            <p class="adresse_p"><?php echo htmlspecialchars($emplacement['numDepartement']) . " ". htmlspecialchars($emplacement['departement']) . ", ". htmlspecialchars($leRestaurant['commune']); ?></p>
+            <h2><?php echo htmlspecialchars($leRestaurant->getNom()); ?></h2>
+            <p class="adresse_p"><?php echo htmlspecialchars($emplacement->getNumDepartement()) . " ". htmlspecialchars($emplacement->getDepartement()) . ", ". htmlspecialchars($emplacement->getCommune()); ?></p>
             <div class="categorie_div">
-                <?php if (!empty($leRestaurant['typeRestaurant'])) : ?>
-                    <p><?php echo htmlspecialchars($leRestaurant['typeRestaurant']); ?></p>
+                <?php if (!empty($leRestaurant->getTypeRestaurant()->getType())) : ?>
+                    <p><?php echo htmlspecialchars($leRestaurant->getTypeRestaurant()->getType()); ?></p>
                     <?php if (!empty($typeCuisine)) : ?>
                         <?php foreach ($typeCuisine as $cuisine) : ?>
-                            <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
-                            <p><?php echo htmlspecialchars($cuisine['typeCuisine']); ?></p>
+                            <img class="point_dore" src="/img/point_or.png" alt="Petit point en or">
+                            <p><?php echo htmlspecialchars($cuisine->getTypeCuisine()); ?></p>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 <?php else : ?>
-                    <?php if (!empty($typeCuisine['typeCuisine'])) : ?>
+                    <?php if (!empty($typeCuisine)) : ?>
                         <?php foreach ($typeCuisine as $cuisine) : ?>
-                            <p><?php echo htmlspecialchars($cuisine['typeCuisine']); ?></p>
+                            <p><?php echo htmlspecialchars($cuisine->getTypeCuisine()); ?></p>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php if ($leRestaurant['vegetarien']) : ?>
-                    <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                <?php if ($leRestaurant->isVegetarien()) : ?>
+                    <img class="point_dore" src="/img/point_or.png" alt="Petit point en or">
                     <p>Végétarien</p>
                 <?php endif; ?>
-                <?php if ($leRestaurant['vegan']) : ?>
-                    <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                <?php if ($leRestaurant->isVegan()) : ?>
+                    <img class="point_dore" src="/img/point_or.png" alt="Petit point en or">
                     <p>Végan</p>
                 <?php endif; ?>
-                <?php if ($leRestaurant['entreeFauteuilRoulant']) : ?>
-                    <img class="point_dore" src="../img/point_or.png" alt="Petit point en or">
+                <?php if ($leRestaurant->getEntreeFauteuilRoulant()) : ?>
+                    <img class="point_dore" src="/img/point_or.png" alt="Petit point en or">
                     <p>Access Handicapé</p>
                 <?php endif; ?>
             </div>
             <div class="flex_row_div">
                 <div class="moitie_div">
-                    <?php if (!empty($leRestaurant['horaires'])) : ?>
-                        <div class="flex_row_div">
-                            <p class="description_p">Horaires :</p>
-                            <p><?php echo htmlspecialchars($leRestaurant['horaires']); ?></p>
-                        </div>
-                    <?php endif; ?>
-                    <?php if (!empty($leRestaurant['numTel'])) : ?>
-                        <div class="flex_row_div">
-                            <p class="description_p">Téléphone :</p>
-                            <p><?php echo htmlspecialchars($leRestaurant['numTel']); ?></p>
-                        </div>
-                    <?php endif; ?>
-                    <?php if (!empty($leRestaurant['urlWeb'])) : ?>
-                        <div class="flex_row_div">
-                            <p class="description_p">Site :</p>
-                            <a href="<?php echo htmlspecialchars($leRestaurant['urlWeb']); ?>"><?php echo htmlspecialchars($leRestaurant['urlWeb']); ?></a>
-                        </div>
-                    <?php endif; ?>
-                    <?php if (!empty($leRestaurant['urlFacebook'])) : ?>
-                        <div class="flex_row_div">
-                            <p class="description_p">Facebook :</p>
-                            <a href="<?php echo htmlspecialchars($leRestaurant['urlFacebook']); ?>"><?php echo htmlspecialchars($leRestaurant['urlFacebook']); ?></a>
-                        </div>
-                    <?php endif; ?>
+                    <div class="flex_row_div">
+                        <p class="description_p">Horaires :</p>
+                        <p><?php echo htmlspecialchars($leRestaurant->getHoraires()); ?></p>
+                    </div>
+                    <div class="flex_row_div">
+                        <p class="description_p">Téléphone :</p>
+                        <p><?php echo htmlspecialchars($leRestaurant->getNumTel()); ?></p>
+                    </div>
+                    <div class="flex_row_div">
+                        <p class="description_p">Site :</p>
+                        <a href="<?php echo htmlspecialchars($leRestaurant->getUrlWeb()); ?>"><?php echo htmlspecialchars($leRestaurant->getUrlWeb()); ?></a>
+                    </div>
+                    <div class="flex_row_div">
+                        <p class="description_p">Facebook :</p>
+                        <a href="<?php echo htmlspecialchars($leRestaurant->getUrlFacebook()); ?>"><?php echo htmlspecialchars($leRestaurant->getUrlFacebook()); ?></a>
+                    </div>
                 </div>
                 <div class="moitie_div">
-                    <?php if (!empty($leRestaurant['marqueRestaurant'])) : ?>
-                        <div class="marque_div">
-                            <p><?php echo htmlspecialchars($leRestaurant['marqueRestaurant']); ?></p>
-                        </div>
-                    <?php endif; ?>
+                    <div class="marque_div">
+                        <p><?php echo htmlspecialchars($leRestaurant->getMarqueRestaurant()); ?></p>
+                    </div>
                 </div>
             </div>
         </div>
