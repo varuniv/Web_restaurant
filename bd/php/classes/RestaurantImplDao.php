@@ -2,15 +2,18 @@
 
 namespace bd\php\classes;
 
-require_once __DIR__ . "/Cuisine.php";
-require_once __DIR__ . "/TypeRestaurant.php";
-require_once __DIR__ . "/Emplacement.php";
-require_once __DIR__ . "/Restaurant.php";
-require_once __DIR__ . "/../Connexion.php";
-
-use bd\classes\Cuisine;
+use modele\classes\Cuisine;
+use modele\classes\Restaurant;
+use modele\classes\Emplacement;
+use modele\classes\TypeRestaurant;
 use bd\php\Connexion;
 use PDO;
+
+require_once __DIR__ . "/../../../modele/classes/Cuisine.php";
+require_once __DIR__ . "/../../../modele/classes/Restaurant.php";
+require_once __DIR__ . "/../../../modele/classes/Emplacement.php";
+require_once __DIR__ . "/../../../modele/classes/TypeRestaurant.php";
+require_once __DIR__ . "/../Connexion.php";
 
 class RestaurantImplDao
 {
@@ -383,7 +386,7 @@ class RestaurantImplDao
         $id = $this->getMinUnusedRestId();
 
         print($restaurant->getNom() . "\n" .
-            $restaurant->getTypeRestaurant()->getId() . "\n" .
+            $restaurant->getTypeRestaurant()->getIdType() . "\n" .
             $restaurant->getHoraires() . "\n" .
             $restaurant->getSiret() . "\n" .
             $restaurant->getNumTel() . "\n" .
@@ -400,7 +403,7 @@ class RestaurantImplDao
 
         $insertRestaurant->execute(array(
             $id,
-            $restaurant->getTypeRestaurant()->getId(),
+            $restaurant->getTypeRestaurant()->getIdType(),
             $restaurant->getNom(),
             $restaurant->getHoraires(),
             $restaurant->getSiret(),
@@ -460,7 +463,7 @@ class RestaurantImplDao
                       WHERE idRestaurant = ?');
         $update->execute(array(
             $newRestaurant->getNom(),
-            $newRestaurant->getTypeRestaurant()->getId(),
+            $newRestaurant->getTypeRestaurant()->getIdType(),
             $newRestaurant->getHoraires(),
             $newRestaurant->getSiret(),
             $newRestaurant->getNumTel(),
@@ -506,7 +509,7 @@ class RestaurantImplDao
 
 $emplacement = new Emplacement("", "Paris", 0);
 $typeRestaurant = new TypeRestaurant(2, "test");
-$resto = new Restaurant(0, "test insert", "08:00-22:00", 12, 0000000000, "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement);
+$resto = new Restaurant(0, "test insert", "08:00-22:00", "12", "0000000000", "test url", true, false, false, true, "test marque", 5, "test url facebook", $typeRestaurant, $emplacement);
 $dao = new RestaurantImplDao();
 $dao->deleteCuisine(3);
 //$restaurants = $dao->getRestaurantsByType("Fast Food");

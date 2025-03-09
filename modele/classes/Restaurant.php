@@ -4,12 +4,13 @@ namespace modele\classes;
 use modele\classes\TypeRestaurant;
 use modele\classes\Cuisine;
 use modele\classes\Emplacement;
+
 class Restaurant{
     private int $idRestaurant;
     private String $nomRestaurant;
     private String $horaires;
-    private int $siret;
-    private int $numTel;
+    private String $siret;
+    private String $numTel;
     private String $urlWeb;
     private bool $vegetarien;
     private bool $vegan;
@@ -19,10 +20,10 @@ class Restaurant{
     private int $nbEtoiles;
     private String $urlFacebook;
     private TypeRestaurant $typeRestaurant;
-    private Cuisine $cuisine;
+    private array $cuisines;
     private Emplacement $emplacement;
 
-    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, int $siret, int $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Cuisine $cuisine){
+    public function __construct(int $idRestaurant, String $nomRestaurant, String $horaires, String $siret, String $numTel, String $urlWeb, bool $vegetarien, bool $vegan, bool $entreeFauteuilRoulant, bool $accesInternet, String $marqueRestaurant, int $nbEtoiles, String $urlFacebook, TypeRestaurant $typeRestaurant, Emplacement $emplacement){
         $this->idRestaurant=$idRestaurant;
         $this->nomRestaurant=$nomRestaurant;
         $this->horaires=$horaires;
@@ -37,7 +38,8 @@ class Restaurant{
         $this->nbEtoiles=$nbEtoiles;
         $this->urlFacebook=$urlFacebook;
         $this->typeRestaurant=$typeRestaurant;
-        $this->cuisine=$cuisine;
+        $this->cuisines=[];
+        $this->emplacement=$emplacement;
     }
 
     public function getId():int{
@@ -52,11 +54,11 @@ class Restaurant{
         return $this->horaires;
     }
 
-    public function getSiret():int{
+    public function getSiret():String{
         return $this->siret;
     }
 
-    public function getNumTel():int{
+    public function getNumTel():String{
         return $this->numTel;
     }
 
@@ -96,16 +98,20 @@ class Restaurant{
         return $this->typeRestaurant;
     }
 
-    public function getCuisine():Cuisine{
-        return $this->cuisine;
+    public function getEmplacement():Emplacement{
+        return $this->emplacement;
     }
 
-    public function getEmplacement():Emplacement{
-        return $this->empacement;
+    public function getCuisines():array{
+        return $this->cuisines;
+    }
+
+    public function setId(int $idRestaurant):void{
+        $this->idRestaurant = $idRestaurant;
     }
 
     public function setNom(String $nom):void{
-        $this->nom=$nom;
+        $this->nomRestaurant=$nom;
     }
 
     public function setHoraires(String $horaires):void{
@@ -116,12 +122,12 @@ class Restaurant{
         $this->siret=$siret;
     }
 
-    public function setNumTel(int $numTel):void{
+    public function setNumTel(String $numTel):void{
         $this->numTel=$numTel;
     }
 
     public function setUrlWeb(String $urlWeb):void{
-        $this->urlWen=$urlWeb;
+        $this->urlWeb=$urlWeb;
     }
 
     public function setVegetarien(bool $vegetarien):void{
@@ -156,12 +162,20 @@ class Restaurant{
         $this->typeRestaurant=$typeRestaurant;
     }
 
-    public function setCuisine(Cuisine $cuisine):void{
-        $this->cuisine=$cuisine;
+    public function setCuisines(array $cuisines):void{
+        $this->cuisines=$cuisines;
     }
 
     public function setEmplacement(Emplacement $emplacement):void{
         $this->emplacement=$emplacement;
+    }
+
+    public function addCuisine(Cuisine $cuisine):void{
+        array_push($this->cuisines, $cuisine);
+    }
+
+    public function __toString():String{
+        return $this->nomRestaurant." ".$this->typeRestaurant->__toString()." Il ouvre à $this->horaires Num Siret: $this->siret Tel: $this->numTel".$this->emplacement->__toString();
     }
 }
 ?>
