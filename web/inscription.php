@@ -1,21 +1,11 @@
 <?php
-$cssFile = "../styles/inscription.css";
-include 'header.php';
 
-function connexionBd(){
-    $serverName = "servinfo-maria";
-    $dbName="DBdelahaye";
-    $username = "delahaye";
-    $password = "delahaye";
+use bd\php\Connexion;
 
-    $dsn="mysql:dbname=$dbName;host=$serverName";
-    try {
-      $connexion = new PDO("mysql:host=$serverName;dbname=$dbName", $username, $password);
-      return $connexion;
-    } catch(PDOException $e) {
-      echo "Connection failed: ".$e->getMessage().PHP_EOL;
-    }
-}
+$cssFile = "/styles/inscription.css";
+require_once __DIR__ . "/../bd/php/Connexion.php";
+
+include __DIR__ . '/header.php';
 
 function ajouterUtilisateur($connexion, $pseudo, $motDePasse){
     $insertSql = "INSERT INTO UTILISATEUR (pseudo, motDePasse, moderateur) VALUES (:pseudo, :motDePasse , :moderateur)";
@@ -26,7 +16,7 @@ function ajouterUtilisateur($connexion, $pseudo, $motDePasse){
     $insertStmt->execute();
 }
 
-$connexion= connexionBd();
+$connexion= Connexion::connect();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['inscription'])) {
     $pseudo = $_POST['pseudo'];
@@ -67,5 +57,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['inscription'])) {
 </div>
 
 <?php
-include 'footer.php';
+include __DIR__ . '/footer.php';
 ?>

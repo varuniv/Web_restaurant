@@ -1,12 +1,16 @@
 <?php
-$cssFile = "../styles/login.css";
+use bd\php\Connexion;
+
+$cssFile = "/styles/login.css";
+require_once __DIR__ . "/../bd/php/Connexion.php";
+require_once __DIR__ . "/../bd/Selects.php";
+
 include 'header.php';
-require_once("../bd/Selects.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $pseudo = $_POST["pseudo"];
     $password = $_POST["password"];
-    $connexion = connexionBd();
+    $connexion = Connexion::connect();
     if ($connexion){
         $utilisateur = getUtilisateurByPseudo($pseudo, $connexion);
         if ($utilisateur){
@@ -15,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $_SESSION["idUtilisateur"] = $utilisateur["idUtilisateur"];
                 $_SESSION["pseudo"] = $pseudo;
                 $_SESSION["moderateur"] = $utilisateur["moderateur"];
-                header("Location: accueil.php");
+                header("Location: /web/accueil.php");
             }
             else {
-                echo "Mot de passe incorrect.";
+                debug_to_console("Mot de passe incorrect.");
             }
         }
         else {
-            echo "Aucun utilisateur trouvé avec ce pseudo.";
+            debug_to_console("Mot de passe incorrect.");
         }
     }
 }
@@ -47,5 +51,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         </div>
     </div>
 <?php
-include 'footer.php';
+include __DIR__ . '/footer.php';
 ?>
