@@ -1,15 +1,16 @@
 <?php
 
 namespace data;
-require_once __DIR__ . '/../bd/php/classes/Emplacement.php';
-require_once __DIR__ . '/../bd/php/classes/TypeRestaurant.php';
-require_once __DIR__ . '/../bd/php/classes/Restaurant.php';
-require_once __DIR__ . '/../bd/php/classes/Cuisine.php';
+use modele\classes\classes\Cuisine;
+use modele\classes\classes\Emplacement;
+use modele\classes\classes\Restaurant;
+use modele\classes\classes\TypeRestaurant;
 
-use bd\php\classes\Emplacement;
-use bd\php\classes\TypeRestaurant;
-use bd\php\classes\Restaurant;
-use bd\php\classes\Cuisine;
+require_once __DIR__ . '/../modele/classes/Emplacement.php';
+require_once __DIR__ . '/../modele/classes/TypeRestaurant.php';
+require_once __DIR__ . '/../modele/classes/Restaurant.php';
+require_once __DIR__ . '/../modele/classes/Cuisine.php';
+
 
 class JSONLoader{
     private static array $dataArray;
@@ -48,12 +49,12 @@ class JSONLoader{
 
             // Création des objets
             $emplacement=new Emplacement($departement, $commune, $numDepartement);
-            $type=new TypeRestaurant($typeRestaurant);
-            $restaurant=new Restaurant($nomRestaurant, $horaires, $siret, $tel, $urlWeb, $vegetarien, $vegan, $entreeFauteuilRoulant, $accesInternet, $marqueRestaurant, $etoiles, $facebook, $type);
+            $type=new TypeRestaurant(0, $typeRestaurant);
+            $restaurant=new Restaurant(0, $nomRestaurant, $horaires, $siret, $tel, $urlWeb, $vegetarien, $vegan, $entreeFauteuilRoulant, $accesInternet, $marqueRestaurant, $etoiles, $facebook, $type);
             $cuisines = isset($line["cuisine"]) ? $line["cuisine"]:null;
             if($cuisines!=null){
                 foreach($cuisines as $cuisine){
-                    $cuisineObject=new Cuisine($cuisine);
+                    $cuisineObject=new Cuisine(0, $cuisine);
                     array_push($dataObjects, $cuisineObject);
                     $restaurant->addCuisine($cuisineObject);
                 }
@@ -63,6 +64,6 @@ class JSONLoader{
         return $dataObjects;
     }
 }
-JSONLoader::loadJSON("data/restaurants_orleans.json");
+JSONLoader::loadJSON("restaurants_orleans.json");
 JSONLoader::parse();
 ?>
