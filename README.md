@@ -1,2 +1,9 @@
 # Web_restaurant
-SAE semstre 4 
+
+## Équipe de développement
+- **DELAHAYE Antoine**
+- **GUIHARD Alexandre**
+- **Sargis Vardanyan**
+- **VOIVENEL Romain**
+
+## Fonctionnalités principales
