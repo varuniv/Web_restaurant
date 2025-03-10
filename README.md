@@ -21,7 +21,8 @@
 
 2. **Lancer l'application** :
    lancer cette commande enfin de mettre en marche l'application
-   ```bash start.sh
+   ```bash
+   bash  start.sh
    ```
 
    Accédez à l'application sur `http://localhost:8000`.
