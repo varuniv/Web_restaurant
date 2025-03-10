@@ -3,7 +3,7 @@
 ## Équipe de développement
 - **DELAHAYE Antoine**
 - **GUIHARD Alexandre**
-- **Sargis Vardanyan**
+- **VARDANYAN Sargis**
 - **VOIVENEL Romain**
 
 ## Fonctionnalités principales
