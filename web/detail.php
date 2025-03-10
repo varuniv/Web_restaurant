@@ -45,9 +45,15 @@ if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) &&
     <div class="container container_background">
         <div class="description_div">
             <div class="notes_div">
-                <?php for ($i = 0; $i < $leRestaurant->getNbEtoiles(); $i++) {
+                <?php
+                $nbEtoileR = $leRestaurant->getNbEtoiles();
+                for ($i = 0; $i < $nbEtoileR; $i++) {
                     echo '<img class="icon_notes" src="/img/fourchette_dorée.jpg" alt="Note du restaurant">';
-                } ?>
+                }
+                if ( $nbEtoileR-0.5 % 1 == 0 ):
+                    echo '<img class="icon_notes" src="/img/demi_fourchette.jpg" alt="Note du restaurant">';
+                endif
+                ?>
             </div>
             <h2><?php echo htmlspecialchars($leRestaurant->getNom()); ?></h2>
             <p class="adresse_p"><?php echo htmlspecialchars($emplacement->getNumDepartement()) . " ". htmlspecialchars($emplacement->getDepartement()) . ", ". htmlspecialchars($emplacement->getCommune()); ?></p>

@@ -4,6 +4,9 @@ namespace modele\classes;
 use modele\classes\TypeRestaurant;
 use modele\classes\Cuisine;
 use modele\classes\Emplacement;
+use bd\php\Connexion;
+
+use function PHPSTORM_META\type;
 
 class Restaurant{
     private int $idRestaurant;
@@ -87,8 +90,22 @@ class Restaurant{
     }
 
     public function getNbEtoiles():int{
+        $this-> majNbEtoiles();
         return $this->nbEtoiles;
     }
+
+    public function majNbEtoiles(){
+        $connexion= Connexion::connect();
+        $lesAvis = getAvisRestaurant($connexion, $this->idRestaurant);
+        $cpt = 0;
+        foreach ($lesAvis as $avis):
+            $cpt = $cpt + $avis['note'];
+        endforeach;
+        $cpt = $cpt / count($lesAvis);
+        $this-> setNbEtoiles($cpt);
+        
+    }
+
 
     public function getUrlFacebook():String{
         return $this->urlFacebook;
