@@ -83,6 +83,9 @@ if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) &&
             <div class="flex_row_div">
                 <div class="moitie_div">
                     <div class="flex_row_div">
+                        <p>Cuisine : <?php echo htmlspecialchars($leRestaurant->getMarqueRestaurant()); ?></p>
+                    </div>
+                    <div class="flex_row_div">
                         <p class="description_p">Horaires :</p>
                         <p><?php echo htmlspecialchars($leRestaurant->getHoraires()); ?></p>
                     </div>
@@ -97,11 +100,6 @@ if (isset($_POST['cancel_idUtilisateur']) && isset($_POST['cancel_dateAvis']) &&
                     <div class="flex_row_div">
                         <p class="description_p">Facebook :</p>
                         <a href="<?php echo htmlspecialchars($leRestaurant->getUrlFacebook()); ?>"><?php echo htmlspecialchars($leRestaurant->getUrlFacebook()); ?></a>
-                    </div>
-                </div>
-                <div class="moitie_div">
-                    <div class="marque_div">
-                        <p><?php echo htmlspecialchars($leRestaurant->getMarqueRestaurant()); ?></p>
                     </div>
                 </div>
             </div>
