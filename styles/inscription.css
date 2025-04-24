@@ -1,0 +1,44 @@
+h1{
+    color: #065b16;
+    font: italic small-caps bold 16px/2 cursive;
+    font-size: 4rem;
+    padding-bottom: 2rem;
+}
+
+.container{
+    padding-top: 3rem;
+    text-align: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.inscription_div{
+    justify-content: center;
+    display: flex;
+}
+
+input{
+    margin-bottom: 3rem;
+}
+
+.btn_inscription{
+    padding: 7px 50px;
+    background-color: #828454;
+    color: black;
+    border: 2px solid;
+    border-color: black;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+footer{
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    max-height: 7rem;
+}
